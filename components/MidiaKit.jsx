@@ -4862,7 +4862,6 @@ export default class MidiaKit extends Component {
                   <div
                     data-r=""
                     data-d={p.d}
-                    onMouseEnter={p.enter}
                     style={{
                       display: "grid",
                       gridTemplateColumns: v.progCols,
@@ -4884,8 +4883,12 @@ export default class MidiaKit extends Component {
                     >
                       {p.n}
                     </span>
+                    {/* a foto que segue o cursor aparece só ao passar sobre o título grande */}
                     <span
+                      onMouseEnter={p.enter}
+                      onMouseLeave={v.progLeave}
                       style={{
+                        justifySelf: "start",
                         fontFamily: "var(--font-bodoni),serif",
                         fontVariationSettings: "'opsz' 28",
                         fontWeight: "400",
