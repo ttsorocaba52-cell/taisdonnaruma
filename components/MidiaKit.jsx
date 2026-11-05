@@ -46,7 +46,7 @@ function Slot({ src, ph }) {
 }
 
 export default class MidiaKit extends Component {
-  state = { fmt: false, active: 0, copied: false, flip: -1, pol: 0, prog: -1, sel: [], vw: null };
+  state = { fmt: false, active: 0, copied: false, flip: -1, pol: 0, prog: -1, sel: [], vw: null, planHover: -1 };
   progRef = createRef();
   followRef = createRef();
   rootRef = createRef();
@@ -97,15 +97,13 @@ export default class MidiaKit extends Component {
     document
       .querySelectorAll("[data-spin]")
       .forEach((el, i) => el.animate([{ rotate: "0deg" }, { rotate: "360deg" }], { duration: 22000 + i * 6000, iterations: Infinity }));
-    document
-      .querySelectorAll("[data-spin2]")
-      .forEach((el) =>
-        el.animate([{ rotate: "-8deg" }, { rotate: "8deg" }, { rotate: "-8deg" }], {
-          duration: 3600,
-          iterations: Infinity,
-          easing: "ease-in-out",
-        }),
-      );
+    document.querySelectorAll("[data-spin2]").forEach((el) =>
+      el.animate([{ rotate: "-8deg" }, { rotate: "8deg" }, { rotate: "-8deg" }], {
+        duration: 3600,
+        iterations: Infinity,
+        easing: "ease-in-out",
+      }),
+    );
     document.querySelectorAll("[data-tw]").forEach((el, i) =>
       el.animate(
         [
@@ -244,9 +242,10 @@ export default class MidiaKit extends Component {
       knobX: this.state.fmt ? "28px" : "3px",
       pkgC: this.state.fmt ? "#C9AFBE" : "#F8F5F2",
       fmtC: this.state.fmt ? "#F8F5F2" : "#C9AFBE",
-      togglePlan: () => this.setState((st) => ({ fmt: !st.fmt })),
-      setPkg: () => this.setState({ fmt: false }),
-      setFmt: () => this.setState({ fmt: true }),
+      togglePlan: () => this.setState((st) => ({ fmt: !st.fmt, planHover: -1 })),
+      setPkg: () => this.setState({ fmt: false, planHover: -1 }),
+      setFmt: () => this.setState({ fmt: true, planHover: -1 }),
+      plansLeave: () => this.setState({ planHover: -1 }),
       plans: (() => {
         const dark = {
           bg: "rgba(248,245,242,.05)",
@@ -275,55 +274,67 @@ export default class MidiaKit extends Component {
           btnBd: "#451531",
           line: "rgba(69,21,49,.2)",
         };
+        // O destaque (card claro, elevado e com brilho) segue o cursor: vai para o card sob o cursor
+        // e volta ao card recomendado (def) quando o cursor sai da grade. O selo fica no card original.
+        const paint = (list, def) => {
+          const h = this.state.planHover;
+          const on = h >= 0 && h < list.length ? h : def;
+          return list.map((p, i) => ({
+            ...p,
+            ...(i === on ? hi : dark),
+            badge: p.badge || "",
+            enter: () => this.setState({ planHover: i }),
+          }));
+        };
         if (!this.state.fmt)
-          return [
-            {
-              ...dark,
-              name: "Essencial",
-              icon: "ph ph-circle-dashed",
-              from: "A partir de",
-              price: "R$ 750",
-              unit: "/ sequência",
-              desc: "Presença rápida e próxima para marcas que querem começar a parceria.",
-              cta: "Quero começar",
-              feats: [
-                { t: "Sequência de stories", v: "" },
-                { t: "Menção e link da marca", v: "" },
-                { t: "Story unitário", v: "R$ 300" },
-              ],
-            },
-            {
-              ...hi,
-              badge: "Mais escolhido",
-              name: "Combo completo",
-              icon: "ph ph-sparkle",
-              from: "Pacote",
-              price: "R$ 4.550",
-              unit: "/ campanha",
-              desc: "A presença mais completa da campanha, do feed aos stories, no Instagram e no TikTok.",
-              cta: "Reservar o combo",
-              feats: [
-                { t: "Stories", v: "" },
-                { t: "Vídeo com repost", v: "" },
-                { t: "Carrossel de fotos", v: "" },
-              ],
-            },
-            {
-              ...dark,
-              name: "Produção",
-              icon: "ph ph-camera",
-              from: "Diária padrão",
-              price: "R$ 8.000",
-              unit: "/ até 8h",
-              desc: "Conteúdo em volume para os canais da marca, com a Tais em set.",
-              cta: "Agendar diária",
-              feats: [
-                { t: "Até 8 horas de produção", v: "" },
-                { t: "Looks e cenários combinados", v: "" },
-                { t: "Diária simples · até 4h", v: "R$ 4.000" },
-              ],
-            },
-          ];
+          return paint(
+            [
+              {
+                name: "Essencial",
+                icon: "ph ph-circle-dashed",
+                from: "A partir de",
+                price: "R$ 750",
+                unit: "/ sequência",
+                desc: "Presença rápida e próxima para marcas que querem começar a parceria.",
+                cta: "Quero começar",
+                feats: [
+                  { t: "Sequência de stories", v: "" },
+                  { t: "Menção e link da marca", v: "" },
+                  { t: "Story unitário", v: "R$ 300" },
+                ],
+              },
+              {
+                badge: "Mais escolhido",
+                name: "Combo completo",
+                icon: "ph ph-sparkle",
+                from: "Pacote",
+                price: "R$ 4.550",
+                unit: "/ campanha",
+                desc: "A presença mais completa da campanha, do feed aos stories, no Instagram e no TikTok.",
+                cta: "Reservar o combo",
+                feats: [
+                  { t: "Stories", v: "" },
+                  { t: "Vídeo com repost", v: "" },
+                  { t: "Carrossel de fotos", v: "" },
+                ],
+              },
+              {
+                name: "Produção",
+                icon: "ph ph-camera",
+                from: "Diária padrão",
+                price: "R$ 8.000",
+                unit: "/ até 8h",
+                desc: "Conteúdo em volume para os canais da marca, com a Tais em set.",
+                cta: "Agendar diária",
+                feats: [
+                  { t: "Até 8 horas de produção", v: "" },
+                  { t: "Looks e cenários combinados", v: "" },
+                  { t: "Diária simples · até 4h", v: "R$ 4.000" },
+                ],
+              },
+            ],
+            1,
+          );
         const m = [
           [
             "Stories",
@@ -367,17 +378,20 @@ export default class MidiaKit extends Component {
             "Produção de conteúdo com a Tais para os canais da marca.",
           ],
         ];
-        return m.map(([name, icon, it, price, unit, desc], i) => ({
-          ...(i === 2 ? { ...hi, badge: "Maior alcance" } : dark),
-          name,
-          icon,
-          from: "A partir de",
-          price,
-          unit,
-          desc,
-          cta: "Solicitar",
-          feats: it.map(([t, v]) => ({ t, v })),
-        }));
+        return paint(
+          m.map(([name, icon, it, price, unit, desc], i) => ({
+            badge: i === 2 ? "Maior alcance" : "",
+            name,
+            icon,
+            from: "A partir de",
+            price,
+            unit,
+            desc,
+            cta: "Solicitar",
+            feats: it.map(([t, v]) => ({ t, v })),
+          })),
+          2,
+        );
       })(),
       pricingCarta: showPrices && (this.props.pricingStyle ?? "Planos") === "Carta",
       pricingCards: showPrices && (this.props.pricingStyle ?? "Planos") === "Cards",
@@ -5178,7 +5192,12 @@ export default class MidiaKit extends Component {
                       }}
                       className="hv15"
                     >
-                      <img src={l.src} alt={l.t} loading="lazy" style={{ display: "block", width: "100%", height: "100%", objectFit: "cover" }} />
+                      <img
+                        src={l.src}
+                        alt={l.t}
+                        loading="lazy"
+                        style={{ display: "block", width: "100%", height: "100%", objectFit: "cover" }}
+                      />
                     </div>
                     <span
                       style={{ fontSize: "12.5px", fontWeight: "600", letterSpacing: ".1em", textTransform: "uppercase", color: "#451531" }}
@@ -5711,6 +5730,7 @@ export default class MidiaKit extends Component {
                   </button>
                 </div>
                 <div
+                  onMouseLeave={v.plansLeave}
                   style={{
                     width: "100%",
                     display: "grid",
@@ -5723,6 +5743,8 @@ export default class MidiaKit extends Component {
                   {v.plans.map((p, _i43) => (
                     <Fragment key={_i43}>
                       <div
+                        data-plan=""
+                        onMouseEnter={p.enter}
                         style={{
                           position: "relative",
                           background: p.bg,
@@ -5735,7 +5757,8 @@ export default class MidiaKit extends Component {
                           gap: "18px",
                           transform: `translateY(${p.lift})`,
                           boxShadow: p.sh,
-                          transition: "transform .4s cubic-bezier(.2,.8,.2,1)",
+                          transition:
+                            "transform .5s cubic-bezier(.2,.8,.2,1), background .45s ease, color .45s ease, border-color .45s ease, box-shadow .5s ease",
                         }}
                       >
                         {p.badge ? (

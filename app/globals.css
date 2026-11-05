@@ -100,3 +100,12 @@ a:hover {
     scale: 1.06;
   }
 }
+
+/* Pacotes: o destaque segue o cursor; os textos internos acompanham a troca de cores */
+[data-plan] * {
+  transition:
+    color 0.45s ease,
+    background-color 0.45s ease,
+    border-color 0.45s ease,
+    transform 0.25s ease !important;
+}

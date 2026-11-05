@@ -76,7 +76,7 @@ public/assets/  imagens
 - Foco nas métricas ao passar o cursor: a métrica em destaque ganha cor e cresce um pouco, e as vizinhas do grupo esmaecem (cards, barras, colunas e listas; lógica em `components/metricFocus.js`, `data-no-focus` exclui um grupo)
 - Cards das plataformas que viram no hover (desktop) ou no toque (mobile)
 - Polaroids que embaralham ao toque
-- Alternância entre "Pacotes" e "Por formato" na seção de valores
+- Alternância entre "Pacotes" e "Por formato" na seção de valores; o card em destaque (claro, elevado e com brilho) segue o cursor e volta ao recomendado quando o cursor sai
 - RSVP que monta um e-mail com os formatos escolhidos
 - Botão de copiar o e-mail de contato
 - Colagem de adesivos nas margens apenas em telas a partir de 1200px
