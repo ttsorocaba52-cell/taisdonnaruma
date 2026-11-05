@@ -1123,7 +1123,8 @@ export default class MidiaKit extends Component {
             >
               <HeroMotion />
             </div>
-            <div className="hero-stats"
+            <div
+              className="hero-stats"
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,200px),1fr))",
@@ -1892,7 +1893,8 @@ export default class MidiaKit extends Component {
                 <i style={{ fontSize: "15px" }} className="ph ph-cursor-click"></i>Passe o mouse ou toque para ver os insights
               </span>
             </div>
-            <div className="plat-cards"
+            <div
+              className="plat-cards"
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,210px),1fr))",
@@ -2085,7 +2087,8 @@ export default class MidiaKit extends Component {
                 </Fragment>
               ))}
             </div>
-            <div className="totals"
+            <div
+              className="totals"
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,200px),1fr))",
@@ -2671,118 +2674,6 @@ export default class MidiaKit extends Component {
                 </Fragment>
               ))}
             </div>
-            <div
-              data-r=""
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,420px),1fr))",
-                gap: "clamp(24px,3.4vw,48px)",
-                alignItems: "center",
-                borderTop: "1.5px solid #451531",
-                paddingTop: "clamp(36px,4.4vw,56px)",
-              }}
-            >
-              <div style={{ display: "flex", flexDirection: "column", gap: "16px", maxWidth: "44ch" }}>
-                <span
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "10px",
-                    fontSize: "12.5px",
-                    fontWeight: "600",
-                    letterSpacing: ".12em",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  <i style={{ fontSize: "18px", color: "#B3093F" }} className="ph ph-graduation-cap"></i>Além das campanhas
-                </span>
-                <h3
-                  style={{
-                    margin: "0",
-                    fontFamily: "var(--font-bodoni),serif",
-                    fontVariationSettings: "'opsz' 28",
-                    fontWeight: "400",
-                    fontSize: "clamp(38px,4.4vw,64px)",
-                    lineHeight: ".95",
-                    letterSpacing: "-.02em",
-                  }}
-                >
-                  Conteúdo que <em style={{ color: "#B3093F" }}>ensina</em> e informa
-                </h3>
-                <p style={{ margin: "0", fontSize: "17px", lineHeight: "1.55", textWrap: "pretty" }}>
-                  Dicas de styling, rotina de beleza e moda explicada sem complicar, no tom leve de sempre. Um formato que gera salvamentos
-                  e confiança para as marcas.
-                </p>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                  {v.eduTags.map((t, _i41) => (
-                    <Fragment key={_i41}>
-                      <span
-                        style={{
-                          fontSize: "13px",
-                          fontWeight: "500",
-                          border: "1px solid #451531",
-                          borderRadius: "999px",
-                          padding: "6px 14px",
-                          whiteSpace: "nowrap",
-                          lineHeight: "1.2",
-                        }}
-                      >
-                        {t}
-                      </span>
-                    </Fragment>
-                  ))}
-                </div>
-              </div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3,minmax(0,1fr))", gap: "clamp(10px,1.4vw,18px)" }}>
-                {v.eduSlots.map((x, _i42) => (
-                  <Fragment key={_i42}>
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "8px",
-                        transform: `rotate(${x.rot})`,
-                        transition: "transform .35s cubic-bezier(.2,.8,.2,1)",
-                      }}
-                      className="hv18"
-                    >
-                      <div
-                        style={{
-                          position: "relative",
-                          aspectRatio: "9/16",
-                          borderRadius: "14px",
-                          overflow: "hidden",
-                          border: "1.5px solid #451531",
-                          background: x.bg,
-                          color: "#451531",
-                        }}
-                      >
-                        <Slot ph={"Arraste um conteúdo educativo"} />
-                        <span
-                          style={{
-                            position: "absolute",
-                            left: "8px",
-                            top: "8px",
-                            pointerEvents: "none",
-                            background: "#F8F5F2",
-                            color: "#451531",
-                            borderRadius: "999px",
-                            padding: "4px 10px",
-                            fontSize: "11.5px",
-                            fontWeight: "600",
-                            letterSpacing: ".06em",
-                            textTransform: "uppercase",
-                          }}
-                        >
-                          {x.tag}
-                        </span>
-                      </div>
-                      <span style={{ fontSize: "14px", fontWeight: "600", lineHeight: "1.3" }}>{x.t}</span>
-                    </div>
-                  </Fragment>
-                ))}
-              </div>
-            </div>
           </div>
         </section>
 
@@ -3073,7 +2964,8 @@ export default class MidiaKit extends Component {
                 </div>
               </div>
             </div>
-            <div className="kpi-grid"
+            <div
+              className="kpi-grid"
               data-r=""
               style={{
                 display: "grid",
@@ -4120,7 +4012,8 @@ export default class MidiaKit extends Component {
                 </div>
               </div>
             </div>
-            <div className="kpi-grid"
+            <div
+              className="kpi-grid"
               data-r=""
               style={{
                 display: "grid",
@@ -4738,7 +4631,8 @@ export default class MidiaKit extends Component {
                 <span style={{ fontSize: "12.5px", fontWeight: "600", letterSpacing: ".1em", textTransform: "uppercase" }}>
                   Vídeos em destaque
                 </span>
-                <div className="tt-vids"
+                <div
+                  className="tt-vids"
                   style={{
                     display: "grid",
                     gridTemplateColumns: "repeat(auto-fit,minmax(min(46%,160px),1fr))",
@@ -5145,7 +5039,8 @@ export default class MidiaKit extends Component {
                 </div>
               </div>
             </div>
-            <div className="kpi-grid"
+            <div
+              className="kpi-grid"
               data-r=""
               style={{
                 display: "grid",
@@ -5501,6 +5396,129 @@ export default class MidiaKit extends Component {
           </div>
         </section>
 
+        {/* Conteúdo educativo (antes era parte dos cases) */}
+        <section
+          id="s-edu"
+          data-sec="3"
+          data-screen-label="05c Conteúdo educativo"
+          style={{ position: "relative", padding: "clamp(56px,7vw,100px) clamp(16px,3.5vw,48px) 0", background: "#F8F5F2" }}
+        >
+          <div style={{ maxWidth: "1360px", margin: "0 auto" }}>
+            <div
+              data-r=""
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,420px),1fr))",
+                gap: "clamp(24px,3.4vw,48px)",
+                alignItems: "center",
+                borderTop: "1.5px solid #451531",
+                paddingTop: "clamp(36px,4.4vw,56px)",
+              }}
+            >
+              <div style={{ display: "flex", flexDirection: "column", gap: "16px", maxWidth: "44ch" }}>
+                <span
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    fontSize: "12.5px",
+                    fontWeight: "600",
+                    letterSpacing: ".12em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  <i style={{ fontSize: "18px", color: "#B3093F" }} className="ph ph-graduation-cap"></i>Além das campanhas
+                </span>
+                <h3
+                  style={{
+                    margin: "0",
+                    fontFamily: "var(--font-bodoni),serif",
+                    fontVariationSettings: "'opsz' 28",
+                    fontWeight: "400",
+                    fontSize: "clamp(38px,4.4vw,64px)",
+                    lineHeight: ".95",
+                    letterSpacing: "-.02em",
+                  }}
+                >
+                  Conteúdo que <em style={{ color: "#B3093F" }}>ensina</em> e informa
+                </h3>
+                <p style={{ margin: "0", fontSize: "17px", lineHeight: "1.55", textWrap: "pretty" }}>
+                  Dicas de styling, rotina de beleza e moda explicada sem complicar, no tom leve de sempre. Um formato que gera salvamentos
+                  e confiança para as marcas.
+                </p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                  {v.eduTags.map((t, _i41) => (
+                    <Fragment key={_i41}>
+                      <span
+                        style={{
+                          fontSize: "13px",
+                          fontWeight: "500",
+                          border: "1px solid #451531",
+                          borderRadius: "999px",
+                          padding: "6px 14px",
+                          whiteSpace: "nowrap",
+                          lineHeight: "1.2",
+                        }}
+                      >
+                        {t}
+                      </span>
+                    </Fragment>
+                  ))}
+                </div>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(3,minmax(0,1fr))", gap: "clamp(10px,1.4vw,18px)" }}>
+                {v.eduSlots.map((x, _i42) => (
+                  <Fragment key={_i42}>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "8px",
+                        transform: `rotate(${x.rot})`,
+                        transition: "transform .35s cubic-bezier(.2,.8,.2,1)",
+                      }}
+                      className="hv18"
+                    >
+                      <div
+                        style={{
+                          position: "relative",
+                          aspectRatio: "9/16",
+                          borderRadius: "14px",
+                          overflow: "hidden",
+                          border: "1.5px solid #451531",
+                          background: x.bg,
+                          color: "#451531",
+                        }}
+                      >
+                        <Slot ph={"Arraste um conteúdo educativo"} />
+                        <span
+                          style={{
+                            position: "absolute",
+                            left: "8px",
+                            top: "8px",
+                            pointerEvents: "none",
+                            background: "#F8F5F2",
+                            color: "#451531",
+                            borderRadius: "999px",
+                            padding: "4px 10px",
+                            fontSize: "11.5px",
+                            fontWeight: "600",
+                            letterSpacing: ".06em",
+                            textTransform: "uppercase",
+                          }}
+                        >
+                          {x.tag}
+                        </span>
+                      </div>
+                      <span style={{ fontSize: "14px", fontWeight: "600", lineHeight: "1.3" }}>{x.t}</span>
+                    </div>
+                  </Fragment>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section
           id="s04"
           data-sec="3"
@@ -5639,7 +5657,6 @@ export default class MidiaKit extends Component {
             </div>
           </div>
         </section>
-
 
         {v.pricingPlans ? (
           <>
