@@ -1318,3 +1318,22 @@ a:hover {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+/* Resultados dos cases: rótulo se ajusta à largura da caixa (ex.: "CONTEÚDOS" em celulares estreitos) */
+.cv-res > div > span:last-child {
+  overflow-wrap: anywhere;
+}
+@container (max-width: 130px) {
+  .cv-res > div > span:last-child {
+    font-size: clamp(9.5px, 10.5cqi, 12px);
+    letter-spacing: 0.04em;
+  }
+}
+@media (max-width: 559px) {
+  .cv-res {
+    gap: 8px;
+  }
+  .cv-res > div {
+    padding: 14px 10px;
+  }
+}
