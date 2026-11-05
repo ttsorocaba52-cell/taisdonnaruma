@@ -80,3 +80,23 @@ a:hover {
   animation: marquee 125s linear infinite;
   will-change: transform;
 }
+
+/* Foco nas métricas (components/metricFocus.js): só em dispositivos com cursor */
+@media (hover: hover) and (pointer: fine) {
+  [data-focus]:has([data-focus-item]:hover) [data-focus-item]:not(:hover),
+  [data-focus-o]:has([data-focus-oitem]:hover) [data-focus-oitem]:not(:hover) {
+    filter: opacity(0.42) saturate(0.6);
+  }
+  [data-focus-num],
+  [data-focus-solo] {
+    transition:
+      color 0.35s ease,
+      scale 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform-origin: left bottom; /* padrão; metricFocus.js ajusta por número */
+  }
+  [data-focus-item]:hover [data-focus-num],
+  [data-focus-solo]:hover {
+    color: var(--focus) !important;
+    scale: 1.06;
+  }
+}

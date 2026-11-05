@@ -73,6 +73,7 @@ public/assets/  imagens
 - Navegação fixa com a seção ativa destacada
 - Revelação suave dos elementos ao rolar
 - Números das métricas contam suavemente até o valor real ao entrar na tela (exceto os da capa e os preços); a lógica fica em `components/countUp.js`, e `data-no-count` exclui um número específico
+- Foco nas métricas ao passar o cursor: a métrica em destaque ganha cor e cresce um pouco, e as vizinhas do grupo esmaecem (cards, barras, colunas e listas; lógica em `components/metricFocus.js`, `data-no-focus` exclui um grupo)
 - Cards das plataformas que viram no hover (desktop) ou no toque (mobile)
 - Polaroids que embaralham ao toque
 - Alternância entre "Pacotes" e "Por formato" na seção de valores

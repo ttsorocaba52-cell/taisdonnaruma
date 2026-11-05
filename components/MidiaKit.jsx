@@ -4,6 +4,7 @@
 import { Component, Fragment, createRef } from "react";
 import HeroMotion from "./HeroMotion";
 import { setupCountUp } from "./countUp";
+import { setupMetricFocus } from "./metricFocus";
 
 function Slot({ src, ph }) {
   return (
@@ -62,6 +63,7 @@ export default class MidiaKit extends Component {
     this.t0 = setTimeout(() => document.querySelectorAll("[data-sec]").forEach((s) => this.io2.observe(s)), 50);
     this.t = setTimeout(() => this.setupMotion(), 80);
     this.fine = matchMedia("(pointer:fine)").matches;
+    this.tf = setTimeout(() => setupMetricFocus(), 60);
     this.onResize();
     window.addEventListener("resize", this.onResize);
   }
@@ -70,6 +72,7 @@ export default class MidiaKit extends Component {
   }
   componentWillUnmount() {
     clearTimeout(this.t);
+    clearTimeout(this.tf);
     clearTimeout(this.t0);
     clearTimeout(this.tc);
     window.removeEventListener("resize", this.onResize);
