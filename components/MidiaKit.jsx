@@ -131,8 +131,6 @@ export default class MidiaKit extends Component {
         { duration: 2800 + i * 400, iterations: Infinity, easing: "ease-in-out" },
       ),
     );
-    const mq = document.querySelector("[data-marquee]");
-    if (mq) mq.animate([{ transform: "translateX(0)" }, { transform: "translateX(-50%)" }], { duration: 40000, iterations: Infinity });
   }
   observeNew() {
     if (!this.io) return;
@@ -521,7 +519,9 @@ export default class MidiaKit extends Component {
         { v: "412K", k: "TikTok", icon: "ph ph-tiktok-logo", go: () => this.goId("s03-tt") },
         { v: "132K", k: "YouTube", icon: "ph ph-youtube-logo", go: () => this.goId("s03-yt") },
       ],
-      ticker: [...Array(2)].flatMap(() => ["fun but chic", "moda", "humor", "lifestyle", "beleza"]),
+      // Faixa infinita: duas metades idênticas (cada uma com 4 repetições, mais larga que qualquer tela);
+      // o CSS desloca -50% em loop, então a emenda é invisível.
+      ticker: [...Array(8)].flatMap(() => ["fun but chic", "moda", "humor", "lifestyle", "beleza"]),
       shuffle: () => this.setState((s) => ({ pol: (s.pol + 1) % 3 })),
       polaroids: pols.map((p, i) => ({ ...p, ...poses[(i - pol + 3) % 3] })),
       stStats: [

@@ -66,3 +66,17 @@ a:hover {
     transition: none !important;
   }
 }
+
+/* Faixa de palavras abaixo da capa: rolagem infinita */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+[data-marquee] {
+  animation: marquee 125s linear infinite;
+  will-change: transform;
+}
