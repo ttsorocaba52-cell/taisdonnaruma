@@ -45,11 +45,28 @@ function Slot({ src, ph }) {
   );
 }
 
+// Pacote/formato escolhido no painel -> opção marcada no RSVP (índice em rsvpRaw)
+const RSVP_FOR_PLAN = { Essencial: 0, "Combo completo": 3, Produção: 4, Stories: 0, Feed: 2, Vídeo: 1, Diária: 4 };
+
 export default class MidiaKit extends Component {
-  state = { fmt: false, active: 0, copied: false, flip: -1, pol: 0, prog: -1, sel: [], vw: null, planHover: -1, menu: false };
+  state = {
+    fmt: false,
+    active: 0,
+    copied: false,
+    flip: -1,
+    pol: 0,
+    prog: -1,
+    sel: [],
+    vw: null,
+    planHover: -1,
+    menu: false,
+    pkgOpen: false,
+  };
   progRef = createRef();
   followRef = createRef();
   rootRef = createRef();
+  pkgCloseRef = createRef();
+  pkgTriggerRef = createRef();
   onResize = () => this.setState((st) => ({ vw: window.innerWidth, menu: window.innerWidth < 760 ? st.menu : false }));
 
   componentDidMount() {
@@ -71,10 +88,18 @@ export default class MidiaKit extends Component {
   componentDidUpdate(_, prev) {
     this.observeNew();
     // trava a rolagem da página enquanto o menu do celular está aberto
-    if (prev.menu !== this.state.menu) document.documentElement.style.overflow = this.state.menu ? "hidden" : "";
+    const locked = this.state.menu || this.state.pkgOpen;
+    if (prev.menu !== this.state.menu || prev.pkgOpen !== this.state.pkgOpen)
+      document.documentElement.style.overflow = locked ? "hidden" : "";
+    // painel de pacotes: foco no botão de fechar ao abrir; volta ao botão que abriu ao fechar
+    if (!prev.pkgOpen && this.state.pkgOpen) this.pkgCloseRef.current?.focus({ preventScroll: true });
+    if (prev.pkgOpen && !this.state.pkgOpen && this.pkgReturn) this.pkgTriggerRef.current?.focus({ preventScroll: true });
   }
   onKey = (e) => {
-    if (e.key === "Escape" && this.state.menu) this.setState({ menu: false });
+    if (e.key === "Escape" && (this.state.menu || this.state.pkgOpen)) {
+      this.pkgReturn = this.state.pkgOpen;
+      this.setState({ menu: false, pkgOpen: false });
+    }
   };
   componentWillUnmount() {
     clearTimeout(this.t);
@@ -292,6 +317,15 @@ export default class MidiaKit extends Component {
             ...(i === on ? hi : dark),
             badge: p.badge || "",
             enter: () => this.setState({ planHover: i }),
+            // escolher no painel: fecha, marca o formato no RSVP e rola até o contato
+            pick: () => {
+              const idx = RSVP_FOR_PLAN[p.name];
+              this.pkgReturn = false;
+              this.setState(
+                (st) => ({ pkgOpen: false, menu: false, sel: idx == null || st.sel.includes(idx) ? st.sel : [...st.sel, idx].sort() }),
+                () => this.go(6),
+              );
+            },
           }));
         };
         if (!this.state.fmt)
@@ -526,6 +560,18 @@ export default class MidiaKit extends Component {
       menuOpen: this.state.menu,
       toggleMenu: () => this.setState((st) => ({ menu: !st.menu })),
       closeMenu: () => this.setState({ menu: false }),
+      pkgOpen: this.state.pkgOpen,
+      pkgCloseRef: this.pkgCloseRef,
+      pkgTriggerRef: this.pkgTriggerRef,
+      openPkg: () => this.setState({ pkgOpen: true, menu: false, planHover: -1 }),
+      closePkg: () => {
+        this.pkgReturn = true;
+        this.setState({ pkgOpen: false, planHover: -1 });
+      },
+      seeAllPrices: () => {
+        this.pkgReturn = false;
+        this.setState({ pkgOpen: false, planHover: -1 }, () => this.go(5));
+      },
       nav: navRaw.map(([label, i]) => ({
         label,
         go: () => {
@@ -1066,6 +1112,103 @@ export default class MidiaKit extends Component {
             </button>
           </div>
         </nav>
+        {/* Painel lateral com os pacotes e formatos (abre pelo botão no fim dos cases) */}
+        <div className={v.pkgOpen ? "pkg-drawer open" : "pkg-drawer"} aria-hidden={!v.pkgOpen}>
+          <div className="pkg-backdrop" onClick={v.closePkg}></div>
+          <aside id="pacotes" role="dialog" aria-modal="true" aria-labelledby="pacotes-titulo" className="pkg-panel">
+            <div className="pkg-head">
+              <span>N° 07 · Formatos e investimento</span>
+              <button
+                ref={v.pkgCloseRef}
+                className="pkg-close"
+                onClick={v.closePkg}
+                aria-label="Fechar pacotes"
+                tabIndex={v.pkgOpen ? 0 : -1}
+              >
+                <i className="ph ph-x"></i>
+              </button>
+            </div>
+            <h2 id="pacotes-titulo">
+              Escolha o seu <em>formato</em>
+            </h2>
+            <p className="pkg-lead">Valores de referência. Cada projeto pode ser ajustado ao objetivo, prazo e escopo da sua marca.</p>
+            <div className="pkg-toggle" role="group" aria-label="Tipo de valor">
+              <button onClick={v.setPkg} aria-pressed={!v.knobX.startsWith("28")} tabIndex={v.pkgOpen ? 0 : -1} style={{ color: v.pkgC }}>
+                Pacotes
+              </button>
+              <button
+                className="pkg-switch"
+                onClick={v.togglePlan}
+                aria-label="Alternar entre pacotes e formatos"
+                tabIndex={v.pkgOpen ? 0 : -1}
+              >
+                <span style={{ transform: `translateX(${v.knobX})` }}></span>
+              </button>
+              <button onClick={v.setFmt} aria-pressed={v.knobX.startsWith("28")} tabIndex={v.pkgOpen ? 0 : -1} style={{ color: v.fmtC }}>
+                Por formato
+              </button>
+            </div>
+            <div className="pkg-list" onMouseLeave={v.plansLeave}>
+              {v.plans.map((p, i) => (
+                <article
+                  key={p.name}
+                  onMouseEnter={p.enter}
+                  className="pkg-card"
+                  style={{
+                    background: p.bg,
+                    color: p.fg,
+                    borderColor: p.bd,
+                    boxShadow: p.sh === "none" ? "none" : "0 18px 50px rgba(255,56,119,.3)",
+                  }}
+                >
+                  {p.badge ? <span className="pkg-badge">{p.badge}</span> : null}
+                  <div className="pkg-card-top">
+                    <span className="pkg-name" style={{ color: p.accent }}>
+                      <i className={p.icon}></i>
+                      {p.name}
+                    </span>
+                    <span className="pkg-from" style={{ color: p.muted }}>
+                      {p.from}
+                    </span>
+                  </div>
+                  <div className="pkg-price">
+                    <strong>{p.price}</strong>
+                    <span style={{ color: p.muted }}>{p.unit}</span>
+                  </div>
+                  <p style={{ color: p.muted }}>{p.desc}</p>
+                  <ul>
+                    {p.feats.map((x) => (
+                      <li key={x.t}>
+                        <i className="ph ph-check-circle" style={{ color: p.accent }}></i>
+                        <span>{x.t}</span>
+                        {x.v ? <b>{x.v}</b> : null}
+                      </li>
+                    ))}
+                  </ul>
+                  <button
+                    className="pkg-pick"
+                    onClick={p.pick}
+                    tabIndex={v.pkgOpen ? 0 : -1}
+                    style={{ background: p.btnBg, color: p.btnFg, borderColor: p.btnBd }}
+                  >
+                    {p.cta} <i className="ph ph-arrow-right"></i>
+                  </button>
+                </article>
+              ))}
+            </div>
+            <ul className="pkg-notes">
+              {v.priceNotes.map((n) => (
+                <li key={n}>
+                  <i className="ph ph-info"></i>
+                  {n}
+                </li>
+              ))}
+            </ul>
+            <button className="pkg-all" onClick={v.seeAllPrices} tabIndex={v.pkgOpen ? 0 : -1}>
+              Ver a seção completa na página <i className="ph ph-arrow-down"></i>
+            </button>
+          </aside>
+        </div>
         {/* Menu do celular (abaixo de 760px): tela cheia com os links */}
         <div id="menu-mobile" className={v.menuOpen ? "menu-mobile open" : "menu-mobile"} aria-hidden={!v.menuOpen} onClick={v.closeMenu}>
           <div className="menu-mobile-inner" onClick={(e) => e.stopPropagation()}>
@@ -2673,6 +2816,18 @@ export default class MidiaKit extends Component {
                   </article>
                 </Fragment>
               ))}
+            </div>
+            {/* Atalho para os pacotes sem precisar rolar até o fim da página */}
+            <div data-r="" className="pkg-cta">
+              <div className="pkg-cta-text">
+                <span className="pkg-cta-kicker">Gostou dos resultados?</span>
+                <h3>
+                  Conheça os <em>pacotes</em> e modelos de parceria
+                </h3>
+              </div>
+              <button ref={v.pkgTriggerRef} className="pkg-cta-btn" onClick={v.openPkg} aria-haspopup="dialog" aria-controls="pacotes">
+                Ver pacotes e formatos <i className="ph ph-arrow-up-right"></i>
+              </button>
             </div>
           </div>
         </section>
