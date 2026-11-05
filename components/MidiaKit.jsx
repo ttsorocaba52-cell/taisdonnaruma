@@ -2,8 +2,9 @@
 // Mídia Kit · Tais Donnaruma — ported from the design handoff prototype.
 // Content (numbers, cases, packages) lives in renderVals() below.
 import { Component, Fragment, createRef } from "react";
+import HeroMotion from "./HeroMotion";
 
-function Slot({ src, ph, eager }) {
+function Slot({ src, ph }) {
   return (
     <span style={{ display: "block", position: "relative", width: "100%", height: "100%", aspectRatio: "3/2" }}>
       <span style={{ position: "absolute", inset: 0, overflow: "hidden", background: "rgba(127,127,127,.08)" }}>
@@ -12,8 +13,7 @@ function Slot({ src, ph, eager }) {
           <img
             src={src}
             alt={ph || ""}
-            loading={eager ? "eager" : "lazy"}
-            fetchPriority={eager ? "high" : undefined}
+            loading="lazy"
             decoding="async"
             style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }}
           />
@@ -1064,7 +1064,6 @@ export default class MidiaKit extends Component {
               <span style={{ whiteSpace: "nowrap" }}>@taisdonnaruma</span>
             </div>
             <div
-              data-ri=""
               style={{
                 position: "relative",
                 margin: "0 calc(clamp(16px,3.5vw,48px) * -1)",
@@ -1073,7 +1072,7 @@ export default class MidiaKit extends Component {
                 background: "#D8D2C6",
               }}
             >
-              <Slot eager src={"/assets/banner-hero.webp"} ph={"Banner da capa (1920×1080)"} />
+              <HeroMotion />
             </div>
             <div
               style={{

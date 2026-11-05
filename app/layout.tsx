@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Tais Donnaruma · Mídia Kit 2026",
     description: "Moda, lifestyle, beleza e humor, com elegância e zero tédio.",
-    images: ["/assets/banner-hero.webp"],
+    images: ["/assets/banner-hero-end.webp"],
     locale: "pt_BR",
     type: "website",
   },
