@@ -3136,6 +3136,7 @@ export default class MidiaKit extends Component {
                     style={{
                       borderRight: "1.5px solid #451531",
                       borderBottom: "1.5px solid #451531",
+                      containerType: "inline-size",
                       padding: "20px 22px 24px",
                       display: "flex",
                       flexDirection: "column",
@@ -3167,7 +3168,7 @@ export default class MidiaKit extends Component {
                         fontFamily: "var(--font-hanken),sans-serif",
                         fontVariantNumeric: "tabular-nums lining-nums",
                         fontWeight: "500",
-                        fontSize: "clamp(52px,5vw,76px)",
+                        fontSize: "min(clamp(52px,5vw,76px),25cqi)",
                         lineHeight: ".9",
                         letterSpacing: "-.035em",
                         whiteSpace: "nowrap",
@@ -4183,6 +4184,7 @@ export default class MidiaKit extends Component {
                     style={{
                       borderRight: "1.5px solid #451531",
                       borderBottom: "1.5px solid #451531",
+                      containerType: "inline-size",
                       padding: "20px 22px 24px",
                       display: "flex",
                       flexDirection: "column",
@@ -4211,7 +4213,7 @@ export default class MidiaKit extends Component {
                         fontFamily: "var(--font-hanken),sans-serif",
                         fontVariantNumeric: "tabular-nums lining-nums",
                         fontWeight: "500",
-                        fontSize: "clamp(52px,5vw,76px)",
+                        fontSize: "min(clamp(52px,5vw,76px),25cqi)",
                         lineHeight: ".9",
                         letterSpacing: "-.035em",
                         whiteSpace: "nowrap",
@@ -4668,6 +4670,7 @@ export default class MidiaKit extends Component {
                         style={{
                           borderRight: "1.5px solid rgba(248,245,242,.6)",
                           borderBottom: "1.5px solid rgba(248,245,242,.6)",
+                          containerType: "inline-size",
                           padding: "18px 16px 20px",
                           display: "flex",
                           flexDirection: "column",
@@ -4694,7 +4697,7 @@ export default class MidiaKit extends Component {
                           style={{
                             fontFamily: "var(--font-hanken),sans-serif",
                             fontVariantNumeric: "tabular-nums lining-nums",
-                            fontSize: "clamp(52px,5vw,80px)",
+                            fontSize: "min(clamp(52px,5vw,80px),25cqi)",
                             lineHeight: ".9",
                           }}
                         >
@@ -4921,6 +4924,7 @@ export default class MidiaKit extends Component {
                       style={{
                         borderRight: "1.5px solid rgba(248,245,242,.6)",
                         borderBottom: "1.5px solid rgba(248,245,242,.6)",
+                        containerType: "inline-size",
                         padding: "16px 16px 20px",
                         display: "flex",
                         flexDirection: "column",
@@ -4930,6 +4934,7 @@ export default class MidiaKit extends Component {
                       className="hv11"
                     >
                       <div
+                        className="kpi-head"
                         style={{
                           display: "flex",
                           justifyContent: "space-between",
@@ -4947,7 +4952,7 @@ export default class MidiaKit extends Component {
                         style={{
                           fontFamily: "var(--font-hanken),sans-serif",
                           fontVariantNumeric: "tabular-nums lining-nums",
-                          fontSize: "clamp(60px,5.6vw,92px)",
+                          fontSize: "min(clamp(60px,5.6vw,92px),25cqi)",
                           lineHeight: ".88",
                         }}
                       >
@@ -5210,6 +5215,7 @@ export default class MidiaKit extends Component {
                     style={{
                       borderRight: "1.5px solid #451531",
                       borderBottom: "1.5px solid #451531",
+                      containerType: "inline-size",
                       padding: "20px 22px 24px",
                       display: "flex",
                       flexDirection: "column",
@@ -5241,7 +5247,7 @@ export default class MidiaKit extends Component {
                         fontFamily: "var(--font-hanken),sans-serif",
                         fontVariantNumeric: "tabular-nums lining-nums",
                         fontWeight: "500",
-                        fontSize: "clamp(52px,5vw,76px)",
+                        fontSize: "min(clamp(52px,5vw,76px),25cqi)",
                         lineHeight: ".9",
                         letterSpacing: "-.035em",
                         whiteSpace: "nowrap",
