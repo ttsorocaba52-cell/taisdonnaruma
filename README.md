@@ -71,7 +71,8 @@ public/assets/  imagens
 ## Comportamento
 
 - Navegação fixa com a seção ativa destacada
-- Revelação suave dos elementos ao rolar, com contadores animados
+- Revelação suave dos elementos ao rolar
+- Números das métricas contam suavemente até o valor real ao entrar na tela (exceto os da capa e os preços); a lógica fica em `components/countUp.js`, e `data-no-count` exclui um número específico
 - Cards das plataformas que viram no hover (desktop) ou no toque (mobile)
 - Polaroids que embaralham ao toque
 - Alternância entre "Pacotes" e "Por formato" na seção de valores

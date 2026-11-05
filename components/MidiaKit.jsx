@@ -3,6 +3,7 @@
 // Content (numbers, cases, packages) lives in renderVals() below.
 import { Component, Fragment, createRef } from "react";
 import HeroMotion from "./HeroMotion";
+import { setupCountUp } from "./countUp";
 
 function Slot({ src, ph }) {
   return (
@@ -89,26 +90,7 @@ export default class MidiaKit extends Component {
       { rootMargin: "0px 0px -8% 0px" },
     );
     this.observeNew();
-    this.io3 = new IntersectionObserver(
-      (es) =>
-        es.forEach((e) => {
-          if (!e.isIntersecting) return;
-          const el = e.target,
-            to = +el.dataset.count,
-            suf = el.dataset.suf || "",
-            t0 = performance.now();
-          const step = (now) => {
-            const k = Math.min(1, (now - t0) / 1600),
-              v = Math.round(to * (1 - Math.pow(1 - k, 3)));
-            el.textContent = v + suf;
-            if (k < 1) requestAnimationFrame(step);
-          };
-          requestAnimationFrame(step);
-          this.io3.unobserve(el);
-        }),
-      { threshold: 0.4 },
-    );
-    document.querySelectorAll("[data-count]").forEach((el) => this.io3.observe(el));
+    this.io3 = setupCountUp();
     document
       .querySelectorAll("[data-spin]")
       .forEach((el, i) => el.animate([{ rotate: "0deg" }, { rotate: "360deg" }], { duration: 22000 + i * 6000, iterations: Infinity }));
@@ -1912,8 +1894,6 @@ export default class MidiaKit extends Component {
                         </div>
                         <div style={{ flex: "1", display: "flex", flexDirection: "column", justifyContent: "center", gap: "6px" }}>
                           <span
-                            data-count={p.num}
-                            data-suf={p.suf}
                             style={{
                               fontFamily: "var(--font-hanken),sans-serif",
                               fontVariantNumeric: "tabular-nums lining-nums",
