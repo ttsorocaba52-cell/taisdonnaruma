@@ -1256,10 +1256,10 @@ export default class MidiaKit extends Component {
               <span style={{ whiteSpace: "nowrap" }}>@taisdonnaruma</span>
             </div>
             <div
+              className="hero-banner"
               style={{
                 position: "relative",
                 margin: "0 calc(clamp(16px,3.5vw,48px) * -1)",
-                aspectRatio: "16/9",
                 overflow: "hidden",
                 background: "#D8D2C6",
               }}

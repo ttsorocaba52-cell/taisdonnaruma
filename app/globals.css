@@ -718,3 +718,13 @@ a:hover {
     padding-top: 16px;
   }
 }
+
+/* Banner da capa: 16:9 no tablet/desktop, vertical 9:16 no celular (components/HeroMotion.jsx) */
+.hero-banner {
+  aspect-ratio: 16 / 9;
+}
+@media (max-width: 759px) {
+  .hero-banner {
+    aspect-ratio: 9 / 16;
+  }
+}

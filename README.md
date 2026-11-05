@@ -45,7 +45,8 @@ Os textos fixos de cada seção estão no JSX do `render()`, no mesmo arquivo. C
 
 Ficam em `public/assets/`, já otimizadas em WebP:
 
-- `banner-hero.webm` / `banner-hero.mp4`: motion da capa (toca uma vez e para no último frame)
+- `banner-hero.webm` / `banner-hero.mp4`: motion da capa para tablet e desktop, 16:9 (toca uma vez e para no último frame)
+- `banner-hero-mobile.webm` / `banner-hero-mobile.mp4` e `banner-hero-mobile-end.webp`: versão vertical 9:16 da capa, usada no celular (abaixo de 760px)
 - `banner-hero-end.webp`: imagem final da capa (usada ao fim do vídeo, sem autoplay ou com movimento reduzido)
 - `fotos/`: fotos da Tais e dos cases
 - `marcas/`: logos das marcas parceiras
