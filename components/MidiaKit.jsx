@@ -45,6 +45,20 @@ function Slot({ src, ph }) {
   );
 }
 
+// Vídeos das publis, na ordem dos cases (Aura, Riachuelo, 70mai, Nyma)
+const PUBLIS = [
+  { slug: "aura", dur: "0:16" },
+  { slug: "riachuelo", dur: "1:18" },
+  { slug: "70mai", dur: "0:42" },
+  { slug: "nyma", dur: "1:01" },
+];
+const publi = ({ slug, dur }) => ({
+  video: `/assets/publis/${slug}.mp4`,
+  preview: `/assets/publis/${slug}-preview.mp4`,
+  poster: `/assets/publis/${slug}-poster.webp`,
+  dur,
+});
+
 // Pacote/formato escolhido no painel -> opção marcada no RSVP (índice em rsvpRaw)
 const RSVP_FOR_PLAN = { Essencial: 0, "Combo completo": 3, Produção: 4, Stories: 0, Feed: 2, Vídeo: 1, Diária: 4 };
 
@@ -61,6 +75,7 @@ export default class MidiaKit extends Component {
     planHover: -1,
     menu: false,
     pkgOpen: false,
+    reel: -1,
   };
   progRef = createRef();
   followRef = createRef();
@@ -88,14 +103,20 @@ export default class MidiaKit extends Component {
   componentDidUpdate(_, prev) {
     this.observeNew();
     // trava a rolagem da página enquanto o menu do celular está aberto
-    const locked = this.state.menu || this.state.pkgOpen;
-    if (prev.menu !== this.state.menu || prev.pkgOpen !== this.state.pkgOpen)
+    const locked = this.state.menu || this.state.pkgOpen || this.state.reel >= 0;
+    if (prev.menu !== this.state.menu || prev.pkgOpen !== this.state.pkgOpen || prev.reel !== this.state.reel)
       document.documentElement.style.overflow = locked ? "hidden" : "";
     // painel de pacotes: foco no botão de fechar ao abrir; volta ao botão que abriu ao fechar
     if (!prev.pkgOpen && this.state.pkgOpen) this.pkgCloseRef.current?.focus({ preventScroll: true });
     if (prev.pkgOpen && !this.state.pkgOpen && this.pkgReturn) this.pkgTriggerRef.current?.focus({ preventScroll: true });
   }
   onKey = (e) => {
+    if (this.state.reel >= 0) {
+      if (e.key === "Escape") this.closeReel();
+      if (e.key === "ArrowRight") this.stepReel(1);
+      if (e.key === "ArrowLeft") this.stepReel(-1);
+      return;
+    }
     if (e.key === "Escape" && (this.state.menu || this.state.pkgOpen)) {
       this.pkgReturn = this.state.pkgOpen;
       this.setState({ menu: false, pkgOpen: false });
@@ -112,6 +133,7 @@ export default class MidiaKit extends Component {
     this.io && this.io.disconnect();
     this.io2 && this.io2.disconnect();
     this.io3 && this.io3.disconnect();
+    this.io4 && this.io4.disconnect();
   }
   setupMotion() {
     // Reveal-on-scroll: elements start hidden via CSS (html.rv) and get .in when visible.
@@ -127,6 +149,18 @@ export default class MidiaKit extends Component {
     );
     this.observeNew();
     this.io3 = setupCountUp();
+    this.io4 = new IntersectionObserver(
+      (es) =>
+        es.forEach((e) => {
+          const vid = e.target;
+          if (e.isIntersecting) {
+            const p = vid.play();
+            if (p && p.catch) p.catch(() => {});
+          } else vid.pause();
+        }),
+      { threshold: 0.3 },
+    );
+    document.querySelectorAll("video[data-autoplay]").forEach((el) => this.io4.observe(el));
     document
       .querySelectorAll("[data-spin]")
       .forEach((el, i) => el.animate([{ rotate: "0deg" }, { rotate: "360deg" }], { duration: 22000 + i * 6000, iterations: Infinity }));
@@ -156,6 +190,16 @@ export default class MidiaKit extends Component {
       this.io.observe(el);
     });
   }
+  // player das publis
+  openReel(i) {
+    this.reelReturn = document.activeElement;
+    this.setState({ reel: i, menu: false, pkgOpen: false });
+  }
+  closeReel = () => {
+    this.setState({ reel: -1 });
+    this.reelReturn?.focus?.({ preventScroll: true });
+  };
+  stepReel = (d) => this.setState((st) => ({ reel: (st.reel + d + 4) % 4 }));
   goId(id) {
     const s = document.getElementById(id);
     if (s) window.scrollTo({ top: s.getBoundingClientRect().top + window.scrollY - 40, behavior: "smooth" });
@@ -561,6 +605,10 @@ export default class MidiaKit extends Component {
       toggleMenu: () => this.setState((st) => ({ menu: !st.menu })),
       closeMenu: () => this.setState({ menu: false }),
       pkgOpen: this.state.pkgOpen,
+      reel: this.state.reel,
+      closeReel: this.closeReel,
+      nextReel: () => this.stepReel(1),
+      prevReel: () => this.stepReel(-1),
       pkgCloseRef: this.pkgCloseRef,
       pkgTriggerRef: this.pkgTriggerRef,
       openPkg: () => this.setState({ pkgOpen: true, menu: false, planHover: -1 }),
@@ -892,6 +940,9 @@ export default class MidiaKit extends Component {
         txtOrder: i % 2 ? 1 : 2,
         radius: i % 2 ? "24px" : "999px 999px 24px 24px",
         rot: i % 2 ? "-4deg" : "4deg",
+        // publi completa (com som, abre no player) + prévia curta sem som que roda no card
+        ...publi(PUBLIS[i]),
+        play: () => this.openReel(i),
       })),
       menu: [
         {
@@ -1209,6 +1260,49 @@ export default class MidiaKit extends Component {
             </button>
           </aside>
         </div>
+        {/* Player das publis (abre pelos cases) */}
+        {v.reel >= 0 ? (
+          <div className="reel-modal" role="dialog" aria-modal="true" aria-label={"Publi " + v.cases[v.reel].brand}>
+            <div className="reel-backdrop" onClick={v.closeReel}></div>
+            <div className="reel-box">
+              <div className="reel-head">
+                <div>
+                  <span className="reel-kicker">
+                    {v.cases[v.reel].n} · {v.cases[v.reel].type}
+                  </span>
+                  <strong>{v.cases[v.reel].brand}</strong>
+                </div>
+                <button type="button" className="reel-close" onClick={v.closeReel} aria-label="Fechar vídeo" autoFocus>
+                  <i className="ph ph-x"></i>
+                </button>
+              </div>
+              <div className="reel-stage">
+                <button type="button" className="reel-nav prev" onClick={v.prevReel} aria-label="Publi anterior">
+                  <i className="ph ph-caret-left"></i>
+                </button>
+                <video
+                  key={v.cases[v.reel].video}
+                  className="reel-video"
+                  src={v.cases[v.reel].video}
+                  poster={v.cases[v.reel].poster}
+                  controls
+                  autoPlay
+                  playsInline
+                  preload="auto"
+                ></video>
+                <button type="button" className="reel-nav next" onClick={v.nextReel} aria-label="Próxima publi">
+                  <i className="ph ph-caret-right"></i>
+                </button>
+              </div>
+              <div className="reel-foot">
+                <span>{v.cases[v.reel].platform}</span>
+                <span>
+                  {v.reel + 1} / {v.cases.length}
+                </span>
+              </div>
+            </div>
+          </div>
+        ) : null}
         {/* Menu do celular (abaixo de 760px): tela cheia com os links */}
         <div id="menu-mobile" className={v.menuOpen ? "menu-mobile open" : "menu-mobile"} aria-hidden={!v.menuOpen} onClick={v.closeMenu}>
           <div className="menu-mobile-inner" onClick={(e) => e.stopPropagation()}>
@@ -2681,7 +2775,24 @@ export default class MidiaKit extends Component {
                           transform: `rotate(${c.rot})`,
                         }}
                       >
-                        <Slot src={c.src2} ph={"Vídeo / Reels"} />
+                        {/* prévia sem som da publi; clique abre o vídeo completo com som */}
+                        <button type="button" className="case-reel" onClick={c.play} aria-label={"Assistir à publi da " + c.brand}>
+                          <video
+                            data-autoplay=""
+                            src={c.preview}
+                            poster={c.poster}
+                            muted
+                            loop
+                            playsInline
+                            preload="none"
+                            aria-hidden="true"
+                            tabIndex={-1}
+                          />
+                          <span className="case-reel-play">
+                            <i className="ph-fill ph-play"></i>
+                          </span>
+                          <span className="case-reel-time">{c.dur}</span>
+                        </button>
                       </div>
                       <span
                         style={{
@@ -2793,6 +2904,12 @@ export default class MidiaKit extends Component {
                           </Fragment>
                         ))}
                       </div>
+                      <button type="button" className="case-watch" onClick={c.play}>
+                        <span className="case-watch-icon">
+                          <i className="ph-fill ph-play"></i>
+                        </span>
+                        Assistir à publi <span className="case-watch-dur">{c.dur}</span>
+                      </button>
                       <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
                         {c.deliv.map((dl, _i40) => (
                           <Fragment key={_i40}>

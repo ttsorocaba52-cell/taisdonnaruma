@@ -786,3 +786,244 @@ a:hover {
     letter-spacing: 0.02em !important;
   }
 }
+
+/* ---------- Publis nos cases ---------- */
+.case-reel {
+  appearance: none;
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: #451531;
+  cursor: pointer;
+}
+.case-reel video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.case-reel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(30, 8, 20, 0.55));
+  transition: background 0.3s ease;
+}
+.case-reel:hover::after {
+  background: linear-gradient(180deg, rgba(30, 8, 20, 0.15), rgba(30, 8, 20, 0.6));
+}
+.case-reel-play {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 50%;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(248, 245, 242, 0.92);
+  color: #b3093f;
+  font-size: 18px;
+  translate: -50% -50%;
+  box-shadow: 0 8px 22px rgba(30, 8, 20, 0.35);
+  transition: scale 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.case-reel:hover .case-reel-play {
+  scale: 1.12;
+}
+.case-reel-time {
+  position: absolute;
+  z-index: 1;
+  left: 10px;
+  bottom: 9px;
+  color: #fffdf9;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+}
+.case-watch {
+  appearance: none;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 20px 8px 8px;
+  border: 1.5px solid #451531;
+  border-radius: 999px;
+  background: transparent;
+  color: #451531;
+  font-family: var(--font-hanken), sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
+}
+.case-watch:hover {
+  background: #451531;
+  color: #f8f5f2;
+}
+.case-watch-icon {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #ff3877;
+  color: #fffdf9;
+  font-size: 13px;
+}
+.case-watch-dur {
+  font-weight: 500;
+  opacity: 0.65;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Player das publis ---------- */
+.reel-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 96;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+.reel-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(30, 8, 20, 0.82);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: reel-fade 0.35s ease both;
+}
+.reel-box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(100%, calc((100dvh - 150px) * 9 / 16 + 120px));
+  max-height: 100%;
+  color: #f8f5f2;
+  animation: reel-in 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.reel-head,
+.reel-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 60px;
+}
+.reel-head > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.reel-kicker,
+.reel-foot {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ffb3c9;
+}
+.reel-head strong {
+  font-family: var(--font-bodoni), serif;
+  font-variation-settings: "opsz" 28;
+  font-weight: 400;
+  font-size: clamp(26px, 4vw, 34px);
+  line-height: 1;
+}
+.reel-close,
+.reel-nav {
+  appearance: none;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(248, 245, 242, 0.4);
+  border-radius: 999px;
+  background: rgba(248, 245, 242, 0.08);
+  color: #f8f5f2;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+.reel-close:hover,
+.reel-nav:hover {
+  background: rgba(248, 245, 242, 0.2);
+}
+.reel-stage {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.reel-video {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  max-height: calc(100dvh - 150px);
+  border-radius: 18px;
+  background: #000;
+  object-fit: contain;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+}
+@keyframes reel-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes reel-in {
+  from {
+    opacity: 0;
+    translate: 0 24px;
+    scale: 0.97;
+  }
+}
+@media (max-width: 559px) {
+  .reel-modal {
+    padding: 12px 10px;
+  }
+  .reel-head,
+  .reel-foot {
+    padding: 0 2px;
+  }
+  .reel-stage {
+    position: relative;
+    gap: 0;
+  }
+  /* no celular, as setas ficam sobre o vídeo, nas laterais */
+  .reel-nav {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    translate: 0 -50%;
+    width: 40px;
+    height: 40px;
+    background: rgba(30, 8, 20, 0.45);
+  }
+  .reel-nav.prev {
+    left: 8px;
+  }
+  .reel-nav.next {
+    right: 8px;
+  }
+  .reel-box {
+    width: min(100%, calc((100dvh - 130px) * 9 / 16));
+  }
+  .reel-video {
+    max-height: calc(100dvh - 130px);
+  }
+}
