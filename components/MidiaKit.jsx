@@ -146,8 +146,8 @@ export default class MidiaKit extends Component {
     const navRaw = [
       ["Sobre", 1],
       ["Números", 2],
-      ["Conteúdo", 3],
       ["Marcas", 4],
+      ["Conteúdo", 3],
       ["Serviços", 5],
       ["Contato", 6],
     ].filter((x) => showPrices || x[1] !== 5);
@@ -2120,6 +2120,673 @@ export default class MidiaKit extends Component {
         </section>
 
         <section
+          id="s05"
+          data-sec="4"
+          data-screen-label="05 Marcas"
+          style={{ position: "relative", padding: "clamp(70px,8vw,120px) clamp(16px,3.5vw,48px)", background: "#DCEFF4" }}
+        >
+          {v.collage ? (
+            <>
+              {v.stk.marcas.map((k, _i36) => (
+                <Fragment key={_i36}>
+                  <div
+                    style={{
+                      position: "absolute",
+                      zIndex: "6",
+                      left: k.l,
+                      right: k.r,
+                      top: k.t,
+                      bottom: k.b,
+                      width: k.w,
+                      transform: `rotate(${k.rot})`,
+                      pointerEvents: "none",
+                    }}
+                  >
+                    {k.photo ? (
+                      <>
+                        <div
+                          style={{
+                            position: "relative",
+                            background: "#FFFDF9",
+                            padding: "7px",
+                            boxShadow: "0 14px 28px rgba(69,21,49,.24)",
+                            pointerEvents: "auto",
+                          }}
+                        >
+                          <div style={{ aspectRatio: k.ar, overflow: "hidden", background: "#DCE5FD", color: "#B3093F" }}>
+                            <Slot src={k.src} ph={k.ph} />
+                          </div>
+                          <span
+                            style={{
+                              position: "absolute",
+                              left: "50%",
+                              top: "-11px",
+                              width: "58px",
+                              height: "20px",
+                              transform: "translateX(-50%) rotate(-5deg)",
+                              background: "rgba(255,179,201,.78)",
+                            }}
+                          ></span>
+                          {k.cap ? (
+                            <>
+                              <span
+                                style={{
+                                  position: "absolute",
+                                  left: "0",
+                                  right: "0",
+                                  bottom: "-34px",
+                                  textAlign: "center",
+                                  fontFamily: "var(--font-script),cursive",
+                                  fontSize: "30px",
+                                  lineHeight: "1",
+                                  color: k.capC,
+                                }}
+                              >
+                                {k.cap}
+                              </span>
+                            </>
+                          ) : null}
+                          {k.heart ? (
+                            <>
+                              <span
+                                style={{
+                                  position: "absolute",
+                                  right: "-16px",
+                                  bottom: "-16px",
+                                  width: "42px",
+                                  height: "42px",
+                                  borderRadius: "11px",
+                                  background: "#FF3877",
+                                  color: "#FFFDF9",
+                                  display: "grid",
+                                  placeItems: "center",
+                                  boxShadow: "0 8px 18px rgba(179,9,63,.35)",
+                                }}
+                              >
+                                <i style={{ fontSize: "22px" }} className="ph-fill ph-heart"></i>
+                              </span>
+                            </>
+                          ) : null}
+                        </div>
+                      </>
+                    ) : null}
+                    {k.like ? (
+                      <>
+                        <div style={{ position: "relative", height: "110px" }}>
+                          <span
+                            style={{
+                              position: "absolute",
+                              left: "0",
+                              bottom: "0",
+                              width: "56px",
+                              height: "56px",
+                              borderRadius: "14px",
+                              background: "#FF3877",
+                              color: "#FFFDF9",
+                              display: "grid",
+                              placeItems: "center",
+                              boxShadow: "0 10px 22px rgba(179,9,63,.35)",
+                            }}
+                          >
+                            <i style={{ fontSize: "30px" }} className="ph-fill ph-heart"></i>
+                          </span>
+                          <span
+                            style={{
+                              position: "absolute",
+                              left: "0",
+                              bottom: "-9px",
+                              marginLeft: "18px",
+                              width: "0",
+                              height: "0",
+                              borderLeft: "10px solid transparent",
+                              borderRight: "10px solid transparent",
+                              borderTop: "11px solid #FF3877",
+                            }}
+                          ></span>
+                          <span
+                            style={{
+                              position: "absolute",
+                              left: "62px",
+                              bottom: "46px",
+                              width: "34px",
+                              height: "34px",
+                              borderRadius: "9px",
+                              background: "#FFB3C9",
+                              color: "#FFFDF9",
+                              display: "grid",
+                              placeItems: "center",
+                              transform: "rotate(12deg)",
+                            }}
+                          >
+                            <i style={{ fontSize: "18px" }} className="ph-fill ph-heart"></i>
+                          </span>
+                          <span
+                            style={{
+                              position: "absolute",
+                              left: "34px",
+                              bottom: "88px",
+                              width: "22px",
+                              height: "22px",
+                              borderRadius: "6px",
+                              background: "#FFB3C9",
+                              opacity: ".7",
+                              color: "#FFFDF9",
+                              display: "grid",
+                              placeItems: "center",
+                              transform: "rotate(-14deg)",
+                            }}
+                          >
+                            <i style={{ fontSize: "12px" }} className="ph-fill ph-heart"></i>
+                          </span>
+                        </div>
+                      </>
+                    ) : null}
+                    {k.ticket ? (
+                      <>
+                        <div
+                          style={{
+                            display: "flex",
+                            background: "#FFFDF9",
+                            border: "1.5px solid #451531",
+                            borderRadius: "12px",
+                            overflow: "hidden",
+                            boxShadow: "0 12px 26px rgba(69,21,49,.22)",
+                            color: "#451531",
+                          }}
+                        >
+                          <div
+                            style={{
+                              background: "#FFB3C9",
+                              padding: "12px",
+                              display: "grid",
+                              placeItems: "center",
+                              borderRight: "1.5px dashed #451531",
+                            }}
+                          >
+                            <i style={{ fontSize: "28px" }} className={[k.icon].join(" ")}></i>
+                          </div>
+                          <div style={{ padding: "8px 14px 10px", display: "flex", flexDirection: "column", gap: "2px" }}>
+                            <span
+                              style={{
+                                fontSize: "10.5px",
+                                fontWeight: "600",
+                                letterSpacing: ".14em",
+                                textTransform: "uppercase",
+                                color: "#6B4A5C",
+                              }}
+                            >
+                              {k.kicker}
+                            </span>
+                            <span
+                              style={{
+                                fontFamily: "var(--font-bodoni),serif",
+                                fontVariationSettings: "'opsz' 28",
+                                fontStyle: "italic",
+                                fontSize: "22px",
+                                lineHeight: "1.1",
+                                whiteSpace: "nowrap",
+                              }}
+                            >
+                              {k.label}
+                            </span>
+                          </div>
+                        </div>
+                      </>
+                    ) : null}
+                  </div>
+                </Fragment>
+              ))}
+            </>
+          ) : null}
+          <div style={{ maxWidth: "1360px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "clamp(28px,4vw,48px)" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: "16px 40px" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
+                <span data-r="" style={{ fontSize: "12.5px", fontWeight: "600", letterSpacing: ".12em", textTransform: "uppercase" }}>
+                  N° 04 · Lista de convidados
+                </span>
+                <h2
+                  data-r=""
+                  data-d="80"
+                  style={{
+                    margin: "0",
+                    fontFamily: "var(--font-bodoni),serif",
+                    fontVariationSettings: "'opsz' 28",
+                    fontWeight: "400",
+                    fontSize: "clamp(46px,6vw,98px)",
+                    lineHeight: ".94",
+                    letterSpacing: "-.02em",
+                  }}
+                >
+                  Marcas que <em style={{ color: "#B3093F" }}>já passaram</em> por aqui
+                </h2>
+              </div>
+              <span
+                data-r=""
+                data-d="160"
+                style={{ fontSize: "12.5px", fontWeight: "600", letterSpacing: ".1em", textTransform: "uppercase", color: "#6B4A5C" }}
+              >
+                8 marcas · e contando
+              </span>
+            </div>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill,minmax(min(40%,140px),1fr))",
+                gap: "clamp(24px,3vw,40px) clamp(14px,2vw,28px)",
+                justifyItems: "center",
+              }}
+            >
+              {v.logos.map((l, _i37) => (
+                <Fragment key={_i37}>
+                  <div data-r="" data-d={l.d} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
+                    <div
+                      style={{
+                        width: "min(100%,150px)",
+                        aspectRatio: "1",
+                        borderRadius: "50%",
+                        overflow: "hidden",
+                        background: "#F8F5F2",
+                        boxShadow: "0 14px 30px rgba(69,21,49,.14)",
+                        transition: "transform .4s cubic-bezier(.2,.8,.2,1)",
+                      }}
+                      className="hv15"
+                    >
+                      <img
+                        src={l.src}
+                        alt={l.t}
+                        loading="lazy"
+                        style={{ display: "block", width: "100%", height: "100%", objectFit: "cover" }}
+                      />
+                    </div>
+                    <span
+                      style={{ fontSize: "12.5px", fontWeight: "600", letterSpacing: ".1em", textTransform: "uppercase", color: "#451531" }}
+                    >
+                      {l.t}
+                    </span>
+                  </div>
+                </Fragment>
+              ))}
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
+                <button
+                  onClick={v.goContact}
+                  style={{
+                    appearance: "none",
+                    cursor: "pointer",
+                    width: "min(100%,150px)",
+                    aspectRatio: "1",
+                    border: "1.5px dashed #B3093F",
+                    borderRadius: "50%",
+                    background: "transparent",
+                    color: "#B3093F",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontFamily: "var(--font-script),cursive",
+                    fontSize: "38px",
+                    lineHeight: ".9",
+                    transition: "transform .35s cubic-bezier(.2,.8,.2,1),background .3s",
+                  }}
+                  className="hv16"
+                >
+                  sua marca aqui
+                </button>
+                <span
+                  style={{ fontSize: "12.5px", fontWeight: "600", letterSpacing: ".1em", textTransform: "uppercase", color: "#B3093F" }}
+                >
+                  Próximo convite
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="s05b"
+          data-sec="4"
+          data-screen-label="05b Cases"
+          style={{ position: "relative", padding: "clamp(80px,10vw,140px) clamp(16px,3.5vw,48px)", background: "#F8F5F2" }}
+        >
+          <div style={{ maxWidth: "1360px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "clamp(40px,5vw,72px)" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: "16px 40px" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
+                <span data-r="" style={{ fontSize: "12.5px", fontWeight: "600", letterSpacing: ".12em", textTransform: "uppercase" }}>
+                  N° 04 · Cases
+                </span>
+                <h2
+                  data-r=""
+                  data-d="80"
+                  style={{
+                    margin: "0",
+                    fontFamily: "var(--font-bodoni),serif",
+                    fontVariationSettings: "'opsz' 28",
+                    fontWeight: "400",
+                    fontSize: "clamp(50px,7vw,116px)",
+                    lineHeight: ".92",
+                    letterSpacing: "-.02em",
+                  }}
+                >
+                  Parcerias <em style={{ color: "#B3093F" }}>que deram</em> o que falar
+                </h2>
+              </div>
+              <div
+                data-r=""
+                data-d="160"
+                style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "10px", maxWidth: "36ch" }}
+              >
+                <p style={{ margin: "0", fontSize: "18px", lineHeight: "1.5" }}>
+                  Campanhas criadas junto com as marcas, com o jeito leve e bem-humorado da Tais.
+                </p>
+                <span
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: "600",
+                    letterSpacing: ".1em",
+                    textTransform: "uppercase",
+                    color: "#B3093F",
+                    border: "1px solid #B3093F",
+                    borderRadius: "999px",
+                    padding: "5px 12px",
+                    whiteSpace: "nowrap",
+                    lineHeight: "1.2",
+                  }}
+                >
+                  Cases e números provisórios
+                </span>
+              </div>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "clamp(56px,7vw,110px)" }}>
+              {v.cases.map((c, _i38) => (
+                <Fragment key={_i38}>
+                  <article
+                    data-r=""
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,380px),1fr))",
+                      gap: "clamp(28px,4vw,72px)",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div style={{ order: c.imgOrder, position: "relative", padding: "0 clamp(0px,3vw,40px) clamp(30px,4vw,56px) 0" }}>
+                      <div
+                        style={{
+                          position: "relative",
+                          aspectRatio: "4/5",
+                          borderRadius: c.radius,
+                          overflow: "hidden",
+                          background: "#DCE5FD",
+                          transition: "transform .6s cubic-bezier(.2,.8,.2,1)",
+                        }}
+                        className="hv17"
+                      >
+                        <Slot src={c.src} ph={c.ph} />
+                      </div>
+                      <div
+                        style={{
+                          position: "absolute",
+                          right: "0",
+                          bottom: "0",
+                          width: "38%",
+                          aspectRatio: "9/16",
+                          borderRadius: "16px",
+                          overflow: "hidden",
+                          background: "#A5BEFA",
+                          border: "6px solid #F8F5F2",
+                          boxShadow: "0 22px 44px rgba(69,21,49,.22)",
+                          transform: `rotate(${c.rot})`,
+                        }}
+                      >
+                        <Slot src={c.src2} ph={"Vídeo / Reels"} />
+                      </div>
+                      <span
+                        style={{
+                          position: "absolute",
+                          left: "16px",
+                          top: "16px",
+                          background: "#F8F5F2",
+                          color: "#451531",
+                          borderRadius: "999px",
+                          padding: "6px 14px",
+                          fontSize: "12px",
+                          fontWeight: "600",
+                          letterSpacing: ".1em",
+                          textTransform: "uppercase",
+                          whiteSpace: "nowrap",
+                          lineHeight: "1.2",
+                        }}
+                      >
+                        {c.platform}
+                      </span>
+                    </div>
+                    <div style={{ order: c.txtOrder, display: "flex", flexDirection: "column", gap: "22px" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "baseline",
+                          gap: "16px",
+                          borderBottom: "1px solid #451531",
+                          paddingBottom: "14px",
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontFamily: "var(--font-bodoni),serif",
+                            fontVariationSettings: "'opsz' 28",
+                            fontStyle: "italic",
+                            fontSize: "24px",
+                            color: "#B3093F",
+                          }}
+                        >
+                          {c.n}
+                        </span>
+                        <span
+                          style={{
+                            fontSize: "12.5px",
+                            fontWeight: "600",
+                            letterSpacing: ".12em",
+                            textTransform: "uppercase",
+                            color: "#6B4A5C",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {c.type}
+                        </span>
+                      </div>
+                      <h3
+                        style={{
+                          margin: "0",
+                          fontFamily: "var(--font-bodoni),serif",
+                          fontVariationSettings: "'opsz' 28",
+                          fontWeight: "400",
+                          fontSize: "clamp(44px,5.4vw,84px)",
+                          lineHeight: ".92",
+                          letterSpacing: "-.02em",
+                        }}
+                      >
+                        {c.brand}
+                      </h3>
+                      <p style={{ margin: "0", fontSize: "17px", lineHeight: "1.6", maxWidth: "44ch", textWrap: "pretty" }}>{c.desc}</p>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3,minmax(0,1fr))", gap: "12px", marginTop: "6px" }}>
+                        {c.res.map((r, _i39) => (
+                          <Fragment key={_i39}>
+                            <div
+                              style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: "6px",
+                                padding: "16px 14px",
+                                border: "1px solid rgba(69,21,49,.25)",
+                                borderRadius: "14px",
+                                background: "#FCFAF8",
+                              }}
+                            >
+                              <span
+                                style={{
+                                  fontFamily: "var(--font-hanken),sans-serif",
+                                  fontVariantNumeric: "tabular-nums lining-nums",
+                                  fontWeight: "500",
+                                  fontSize: "clamp(28px,2.8vw,40px)",
+                                  lineHeight: "1",
+                                  letterSpacing: "-.035em",
+                                  color: "#451531",
+                                }}
+                              >
+                                {r.v}
+                              </span>
+                              <span
+                                style={{
+                                  fontSize: "12px",
+                                  fontWeight: "600",
+                                  letterSpacing: ".08em",
+                                  textTransform: "uppercase",
+                                  color: "#6B4A5C",
+                                }}
+                              >
+                                {r.k}
+                              </span>
+                            </div>
+                          </Fragment>
+                        ))}
+                      </div>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                        {c.deliv.map((dl, _i40) => (
+                          <Fragment key={_i40}>
+                            <span
+                              style={{
+                                fontSize: "13px",
+                                fontWeight: "500",
+                                border: "1px solid #451531",
+                                borderRadius: "999px",
+                                padding: "6px 14px",
+                                whiteSpace: "nowrap",
+                                lineHeight: "1.2",
+                              }}
+                            >
+                              {dl}
+                            </span>
+                          </Fragment>
+                        ))}
+                      </div>
+                    </div>
+                  </article>
+                </Fragment>
+              ))}
+            </div>
+            <div
+              data-r=""
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,420px),1fr))",
+                gap: "clamp(24px,3.4vw,48px)",
+                alignItems: "center",
+                borderTop: "1.5px solid #451531",
+                paddingTop: "clamp(36px,4.4vw,56px)",
+              }}
+            >
+              <div style={{ display: "flex", flexDirection: "column", gap: "16px", maxWidth: "44ch" }}>
+                <span
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    fontSize: "12.5px",
+                    fontWeight: "600",
+                    letterSpacing: ".12em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  <i style={{ fontSize: "18px", color: "#B3093F" }} className="ph ph-graduation-cap"></i>Além das campanhas
+                </span>
+                <h3
+                  style={{
+                    margin: "0",
+                    fontFamily: "var(--font-bodoni),serif",
+                    fontVariationSettings: "'opsz' 28",
+                    fontWeight: "400",
+                    fontSize: "clamp(38px,4.4vw,64px)",
+                    lineHeight: ".95",
+                    letterSpacing: "-.02em",
+                  }}
+                >
+                  Conteúdo que <em style={{ color: "#B3093F" }}>ensina</em> e informa
+                </h3>
+                <p style={{ margin: "0", fontSize: "17px", lineHeight: "1.55", textWrap: "pretty" }}>
+                  Dicas de styling, rotina de beleza e moda explicada sem complicar, no tom leve de sempre. Um formato que gera salvamentos
+                  e confiança para as marcas.
+                </p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                  {v.eduTags.map((t, _i41) => (
+                    <Fragment key={_i41}>
+                      <span
+                        style={{
+                          fontSize: "13px",
+                          fontWeight: "500",
+                          border: "1px solid #451531",
+                          borderRadius: "999px",
+                          padding: "6px 14px",
+                          whiteSpace: "nowrap",
+                          lineHeight: "1.2",
+                        }}
+                      >
+                        {t}
+                      </span>
+                    </Fragment>
+                  ))}
+                </div>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(3,minmax(0,1fr))", gap: "clamp(10px,1.4vw,18px)" }}>
+                {v.eduSlots.map((x, _i42) => (
+                  <Fragment key={_i42}>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "8px",
+                        transform: `rotate(${x.rot})`,
+                        transition: "transform .35s cubic-bezier(.2,.8,.2,1)",
+                      }}
+                      className="hv18"
+                    >
+                      <div
+                        style={{
+                          position: "relative",
+                          aspectRatio: "9/16",
+                          borderRadius: "14px",
+                          overflow: "hidden",
+                          border: "1.5px solid #451531",
+                          background: x.bg,
+                          color: "#451531",
+                        }}
+                      >
+                        <Slot ph={"Arraste um conteúdo educativo"} />
+                        <span
+                          style={{
+                            position: "absolute",
+                            left: "8px",
+                            top: "8px",
+                            pointerEvents: "none",
+                            background: "#F8F5F2",
+                            color: "#451531",
+                            borderRadius: "999px",
+                            padding: "4px 10px",
+                            fontSize: "11.5px",
+                            fontWeight: "600",
+                            letterSpacing: ".06em",
+                            textTransform: "uppercase",
+                          }}
+                        >
+                          {x.tag}
+                        </span>
+                      </div>
+                      <span style={{ fontSize: "14px", fontWeight: "600", lineHeight: "1.3" }}>{x.t}</span>
+                    </div>
+                  </Fragment>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section
           id="s03-ig"
           data-sec="2"
           data-screen-label="03b Instagram"
@@ -2360,7 +3027,7 @@ export default class MidiaKit extends Component {
                   textTransform: "uppercase",
                 }}
               >
-                <span>N° 03 · Os números · A / Instagram</span>
+                <span>N° 05 · Os números · A / Instagram</span>
                 <span style={{ color: "#B3093F" }}>Últimos 30 dias</span>
               </div>
               <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: "20px 40px" }}>
@@ -2934,7 +3601,7 @@ export default class MidiaKit extends Component {
                   textTransform: "uppercase",
                 }}
               >
-                <span>N° 03 · Os números · A / Instagram · Stories diários</span>
+                <span>N° 05 · Os números · A / Instagram · Stories diários</span>
                 <span style={{ color: "#A5BEFA" }}>Views reais · 30 dias · divisão diária demonstrativa</span>
               </div>
               <h3
@@ -3408,7 +4075,7 @@ export default class MidiaKit extends Component {
                   textTransform: "uppercase",
                 }}
               >
-                <span>N° 03 · Os números · B / TikTok</span>
+                <span>N° 05 · Os números · B / TikTok</span>
                 <span style={{ color: "#B3093F" }}>Dados provisórios · últimos 90 dias</span>
               </div>
               <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: "20px 40px" }}>
@@ -3873,7 +4540,7 @@ export default class MidiaKit extends Component {
                   textTransform: "uppercase",
                 }}
               >
-                <span>N° 03 · Os números · B / TikTok · Curtidas e views</span>
+                <span>N° 05 · Os números · B / TikTok · Curtidas e views</span>
                 <span style={{ color: "#64B7CC" }}>Curtidas e views · últimos 28 dias</span>
               </div>
               <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: "20px 40px" }}>
@@ -4156,7 +4823,7 @@ export default class MidiaKit extends Component {
                   textTransform: "uppercase",
                 }}
               >
-                <span>N° 03 · Os números · C / YouTube Shorts</span>
+                <span>N° 05 · Os números · C / YouTube Shorts</span>
                 <span style={{ color: "#FF8FB0" }}>Dados reais · 28 dias · top 3 e engajamento demonstrativos</span>
               </div>
               <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: "20px 40px" }}>
@@ -4433,7 +5100,7 @@ export default class MidiaKit extends Component {
                   textTransform: "uppercase",
                 }}
               >
-                <span>N° 03 · Os números · C / YouTube em detalhe</span>
+                <span>N° 05 · Os números · C / YouTube em detalhe</span>
                 <span style={{ color: "#B3093F" }}>Últimos 28 dias</span>
               </div>
               <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: "20px 40px" }}>
@@ -4844,7 +5511,7 @@ export default class MidiaKit extends Component {
             <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: "16px 40px" }}>
               <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
                 <span data-r="" style={{ fontSize: "12.5px", fontWeight: "600", letterSpacing: ".12em", textTransform: "uppercase" }}>
-                  N° 04 · O programa
+                  N° 06 · O programa
                 </span>
                 <h2
                   data-r=""
@@ -4973,672 +5640,6 @@ export default class MidiaKit extends Component {
           </div>
         </section>
 
-        <section
-          id="s05"
-          data-sec="4"
-          data-screen-label="05 Marcas"
-          style={{ position: "relative", padding: "clamp(70px,8vw,120px) clamp(16px,3.5vw,48px)", background: "#DCEFF4" }}
-        >
-          {v.collage ? (
-            <>
-              {v.stk.marcas.map((k, _i36) => (
-                <Fragment key={_i36}>
-                  <div
-                    style={{
-                      position: "absolute",
-                      zIndex: "6",
-                      left: k.l,
-                      right: k.r,
-                      top: k.t,
-                      bottom: k.b,
-                      width: k.w,
-                      transform: `rotate(${k.rot})`,
-                      pointerEvents: "none",
-                    }}
-                  >
-                    {k.photo ? (
-                      <>
-                        <div
-                          style={{
-                            position: "relative",
-                            background: "#FFFDF9",
-                            padding: "7px",
-                            boxShadow: "0 14px 28px rgba(69,21,49,.24)",
-                            pointerEvents: "auto",
-                          }}
-                        >
-                          <div style={{ aspectRatio: k.ar, overflow: "hidden", background: "#DCE5FD", color: "#B3093F" }}>
-                            <Slot src={k.src} ph={k.ph} />
-                          </div>
-                          <span
-                            style={{
-                              position: "absolute",
-                              left: "50%",
-                              top: "-11px",
-                              width: "58px",
-                              height: "20px",
-                              transform: "translateX(-50%) rotate(-5deg)",
-                              background: "rgba(255,179,201,.78)",
-                            }}
-                          ></span>
-                          {k.cap ? (
-                            <>
-                              <span
-                                style={{
-                                  position: "absolute",
-                                  left: "0",
-                                  right: "0",
-                                  bottom: "-34px",
-                                  textAlign: "center",
-                                  fontFamily: "var(--font-script),cursive",
-                                  fontSize: "30px",
-                                  lineHeight: "1",
-                                  color: k.capC,
-                                }}
-                              >
-                                {k.cap}
-                              </span>
-                            </>
-                          ) : null}
-                          {k.heart ? (
-                            <>
-                              <span
-                                style={{
-                                  position: "absolute",
-                                  right: "-16px",
-                                  bottom: "-16px",
-                                  width: "42px",
-                                  height: "42px",
-                                  borderRadius: "11px",
-                                  background: "#FF3877",
-                                  color: "#FFFDF9",
-                                  display: "grid",
-                                  placeItems: "center",
-                                  boxShadow: "0 8px 18px rgba(179,9,63,.35)",
-                                }}
-                              >
-                                <i style={{ fontSize: "22px" }} className="ph-fill ph-heart"></i>
-                              </span>
-                            </>
-                          ) : null}
-                        </div>
-                      </>
-                    ) : null}
-                    {k.like ? (
-                      <>
-                        <div style={{ position: "relative", height: "110px" }}>
-                          <span
-                            style={{
-                              position: "absolute",
-                              left: "0",
-                              bottom: "0",
-                              width: "56px",
-                              height: "56px",
-                              borderRadius: "14px",
-                              background: "#FF3877",
-                              color: "#FFFDF9",
-                              display: "grid",
-                              placeItems: "center",
-                              boxShadow: "0 10px 22px rgba(179,9,63,.35)",
-                            }}
-                          >
-                            <i style={{ fontSize: "30px" }} className="ph-fill ph-heart"></i>
-                          </span>
-                          <span
-                            style={{
-                              position: "absolute",
-                              left: "0",
-                              bottom: "-9px",
-                              marginLeft: "18px",
-                              width: "0",
-                              height: "0",
-                              borderLeft: "10px solid transparent",
-                              borderRight: "10px solid transparent",
-                              borderTop: "11px solid #FF3877",
-                            }}
-                          ></span>
-                          <span
-                            style={{
-                              position: "absolute",
-                              left: "62px",
-                              bottom: "46px",
-                              width: "34px",
-                              height: "34px",
-                              borderRadius: "9px",
-                              background: "#FFB3C9",
-                              color: "#FFFDF9",
-                              display: "grid",
-                              placeItems: "center",
-                              transform: "rotate(12deg)",
-                            }}
-                          >
-                            <i style={{ fontSize: "18px" }} className="ph-fill ph-heart"></i>
-                          </span>
-                          <span
-                            style={{
-                              position: "absolute",
-                              left: "34px",
-                              bottom: "88px",
-                              width: "22px",
-                              height: "22px",
-                              borderRadius: "6px",
-                              background: "#FFB3C9",
-                              opacity: ".7",
-                              color: "#FFFDF9",
-                              display: "grid",
-                              placeItems: "center",
-                              transform: "rotate(-14deg)",
-                            }}
-                          >
-                            <i style={{ fontSize: "12px" }} className="ph-fill ph-heart"></i>
-                          </span>
-                        </div>
-                      </>
-                    ) : null}
-                    {k.ticket ? (
-                      <>
-                        <div
-                          style={{
-                            display: "flex",
-                            background: "#FFFDF9",
-                            border: "1.5px solid #451531",
-                            borderRadius: "12px",
-                            overflow: "hidden",
-                            boxShadow: "0 12px 26px rgba(69,21,49,.22)",
-                            color: "#451531",
-                          }}
-                        >
-                          <div
-                            style={{
-                              background: "#FFB3C9",
-                              padding: "12px",
-                              display: "grid",
-                              placeItems: "center",
-                              borderRight: "1.5px dashed #451531",
-                            }}
-                          >
-                            <i style={{ fontSize: "28px" }} className={[k.icon].join(" ")}></i>
-                          </div>
-                          <div style={{ padding: "8px 14px 10px", display: "flex", flexDirection: "column", gap: "2px" }}>
-                            <span
-                              style={{
-                                fontSize: "10.5px",
-                                fontWeight: "600",
-                                letterSpacing: ".14em",
-                                textTransform: "uppercase",
-                                color: "#6B4A5C",
-                              }}
-                            >
-                              {k.kicker}
-                            </span>
-                            <span
-                              style={{
-                                fontFamily: "var(--font-bodoni),serif",
-                                fontVariationSettings: "'opsz' 28",
-                                fontStyle: "italic",
-                                fontSize: "22px",
-                                lineHeight: "1.1",
-                                whiteSpace: "nowrap",
-                              }}
-                            >
-                              {k.label}
-                            </span>
-                          </div>
-                        </div>
-                      </>
-                    ) : null}
-                  </div>
-                </Fragment>
-              ))}
-            </>
-          ) : null}
-          <div style={{ maxWidth: "1360px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "clamp(28px,4vw,48px)" }}>
-            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: "16px 40px" }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
-                <span data-r="" style={{ fontSize: "12.5px", fontWeight: "600", letterSpacing: ".12em", textTransform: "uppercase" }}>
-                  N° 05 · Lista de convidados
-                </span>
-                <h2
-                  data-r=""
-                  data-d="80"
-                  style={{
-                    margin: "0",
-                    fontFamily: "var(--font-bodoni),serif",
-                    fontVariationSettings: "'opsz' 28",
-                    fontWeight: "400",
-                    fontSize: "clamp(46px,6vw,98px)",
-                    lineHeight: ".94",
-                    letterSpacing: "-.02em",
-                  }}
-                >
-                  Marcas que <em style={{ color: "#B3093F" }}>já passaram</em> por aqui
-                </h2>
-              </div>
-              <span
-                data-r=""
-                data-d="160"
-                style={{ fontSize: "12.5px", fontWeight: "600", letterSpacing: ".1em", textTransform: "uppercase", color: "#6B4A5C" }}
-              >
-                8 marcas · e contando
-              </span>
-            </div>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill,minmax(min(40%,140px),1fr))",
-                gap: "clamp(24px,3vw,40px) clamp(14px,2vw,28px)",
-                justifyItems: "center",
-              }}
-            >
-              {v.logos.map((l, _i37) => (
-                <Fragment key={_i37}>
-                  <div data-r="" data-d={l.d} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
-                    <div
-                      style={{
-                        width: "min(100%,150px)",
-                        aspectRatio: "1",
-                        borderRadius: "50%",
-                        overflow: "hidden",
-                        background: "#F8F5F2",
-                        boxShadow: "0 14px 30px rgba(69,21,49,.14)",
-                        transition: "transform .4s cubic-bezier(.2,.8,.2,1)",
-                      }}
-                      className="hv15"
-                    >
-                      <img
-                        src={l.src}
-                        alt={l.t}
-                        loading="lazy"
-                        style={{ display: "block", width: "100%", height: "100%", objectFit: "cover" }}
-                      />
-                    </div>
-                    <span
-                      style={{ fontSize: "12.5px", fontWeight: "600", letterSpacing: ".1em", textTransform: "uppercase", color: "#451531" }}
-                    >
-                      {l.t}
-                    </span>
-                  </div>
-                </Fragment>
-              ))}
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
-                <button
-                  onClick={v.goContact}
-                  style={{
-                    appearance: "none",
-                    cursor: "pointer",
-                    width: "min(100%,150px)",
-                    aspectRatio: "1",
-                    border: "1.5px dashed #B3093F",
-                    borderRadius: "50%",
-                    background: "transparent",
-                    color: "#B3093F",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontFamily: "var(--font-script),cursive",
-                    fontSize: "38px",
-                    lineHeight: ".9",
-                    transition: "transform .35s cubic-bezier(.2,.8,.2,1),background .3s",
-                  }}
-                  className="hv16"
-                >
-                  sua marca aqui
-                </button>
-                <span
-                  style={{ fontSize: "12.5px", fontWeight: "600", letterSpacing: ".1em", textTransform: "uppercase", color: "#B3093F" }}
-                >
-                  Próximo convite
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section
-          id="s05b"
-          data-sec="4"
-          data-screen-label="05b Cases"
-          style={{ position: "relative", padding: "clamp(80px,10vw,140px) clamp(16px,3.5vw,48px)", background: "#F8F5F2" }}
-        >
-          <div style={{ maxWidth: "1360px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "clamp(40px,5vw,72px)" }}>
-            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: "16px 40px" }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
-                <span data-r="" style={{ fontSize: "12.5px", fontWeight: "600", letterSpacing: ".12em", textTransform: "uppercase" }}>
-                  N° 05 · Cases
-                </span>
-                <h2
-                  data-r=""
-                  data-d="80"
-                  style={{
-                    margin: "0",
-                    fontFamily: "var(--font-bodoni),serif",
-                    fontVariationSettings: "'opsz' 28",
-                    fontWeight: "400",
-                    fontSize: "clamp(50px,7vw,116px)",
-                    lineHeight: ".92",
-                    letterSpacing: "-.02em",
-                  }}
-                >
-                  Parcerias <em style={{ color: "#B3093F" }}>que deram</em> o que falar
-                </h2>
-              </div>
-              <div
-                data-r=""
-                data-d="160"
-                style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "10px", maxWidth: "36ch" }}
-              >
-                <p style={{ margin: "0", fontSize: "18px", lineHeight: "1.5" }}>
-                  Campanhas criadas junto com as marcas, com o jeito leve e bem-humorado da Tais.
-                </p>
-                <span
-                  style={{
-                    fontSize: "12px",
-                    fontWeight: "600",
-                    letterSpacing: ".1em",
-                    textTransform: "uppercase",
-                    color: "#B3093F",
-                    border: "1px solid #B3093F",
-                    borderRadius: "999px",
-                    padding: "5px 12px",
-                    whiteSpace: "nowrap",
-                    lineHeight: "1.2",
-                  }}
-                >
-                  Cases e números provisórios
-                </span>
-              </div>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "clamp(56px,7vw,110px)" }}>
-              {v.cases.map((c, _i38) => (
-                <Fragment key={_i38}>
-                  <article
-                    data-r=""
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,380px),1fr))",
-                      gap: "clamp(28px,4vw,72px)",
-                      alignItems: "center",
-                    }}
-                  >
-                    <div style={{ order: c.imgOrder, position: "relative", padding: "0 clamp(0px,3vw,40px) clamp(30px,4vw,56px) 0" }}>
-                      <div
-                        style={{
-                          position: "relative",
-                          aspectRatio: "4/5",
-                          borderRadius: c.radius,
-                          overflow: "hidden",
-                          background: "#DCE5FD",
-                          transition: "transform .6s cubic-bezier(.2,.8,.2,1)",
-                        }}
-                        className="hv17"
-                      >
-                        <Slot src={c.src} ph={c.ph} />
-                      </div>
-                      <div
-                        style={{
-                          position: "absolute",
-                          right: "0",
-                          bottom: "0",
-                          width: "38%",
-                          aspectRatio: "9/16",
-                          borderRadius: "16px",
-                          overflow: "hidden",
-                          background: "#A5BEFA",
-                          border: "6px solid #F8F5F2",
-                          boxShadow: "0 22px 44px rgba(69,21,49,.22)",
-                          transform: `rotate(${c.rot})`,
-                        }}
-                      >
-                        <Slot src={c.src2} ph={"Vídeo / Reels"} />
-                      </div>
-                      <span
-                        style={{
-                          position: "absolute",
-                          left: "16px",
-                          top: "16px",
-                          background: "#F8F5F2",
-                          color: "#451531",
-                          borderRadius: "999px",
-                          padding: "6px 14px",
-                          fontSize: "12px",
-                          fontWeight: "600",
-                          letterSpacing: ".1em",
-                          textTransform: "uppercase",
-                          whiteSpace: "nowrap",
-                          lineHeight: "1.2",
-                        }}
-                      >
-                        {c.platform}
-                      </span>
-                    </div>
-                    <div style={{ order: c.txtOrder, display: "flex", flexDirection: "column", gap: "22px" }}>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "baseline",
-                          gap: "16px",
-                          borderBottom: "1px solid #451531",
-                          paddingBottom: "14px",
-                        }}
-                      >
-                        <span
-                          style={{
-                            fontFamily: "var(--font-bodoni),serif",
-                            fontVariationSettings: "'opsz' 28",
-                            fontStyle: "italic",
-                            fontSize: "24px",
-                            color: "#B3093F",
-                          }}
-                        >
-                          {c.n}
-                        </span>
-                        <span
-                          style={{
-                            fontSize: "12.5px",
-                            fontWeight: "600",
-                            letterSpacing: ".12em",
-                            textTransform: "uppercase",
-                            color: "#6B4A5C",
-                            whiteSpace: "nowrap",
-                          }}
-                        >
-                          {c.type}
-                        </span>
-                      </div>
-                      <h3
-                        style={{
-                          margin: "0",
-                          fontFamily: "var(--font-bodoni),serif",
-                          fontVariationSettings: "'opsz' 28",
-                          fontWeight: "400",
-                          fontSize: "clamp(44px,5.4vw,84px)",
-                          lineHeight: ".92",
-                          letterSpacing: "-.02em",
-                        }}
-                      >
-                        {c.brand}
-                      </h3>
-                      <p style={{ margin: "0", fontSize: "17px", lineHeight: "1.6", maxWidth: "44ch", textWrap: "pretty" }}>{c.desc}</p>
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3,minmax(0,1fr))", gap: "12px", marginTop: "6px" }}>
-                        {c.res.map((r, _i39) => (
-                          <Fragment key={_i39}>
-                            <div
-                              style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                gap: "6px",
-                                padding: "16px 14px",
-                                border: "1px solid rgba(69,21,49,.25)",
-                                borderRadius: "14px",
-                                background: "#FCFAF8",
-                              }}
-                            >
-                              <span
-                                style={{
-                                  fontFamily: "var(--font-hanken),sans-serif",
-                                  fontVariantNumeric: "tabular-nums lining-nums",
-                                  fontWeight: "500",
-                                  fontSize: "clamp(28px,2.8vw,40px)",
-                                  lineHeight: "1",
-                                  letterSpacing: "-.035em",
-                                  color: "#451531",
-                                }}
-                              >
-                                {r.v}
-                              </span>
-                              <span
-                                style={{
-                                  fontSize: "12px",
-                                  fontWeight: "600",
-                                  letterSpacing: ".08em",
-                                  textTransform: "uppercase",
-                                  color: "#6B4A5C",
-                                }}
-                              >
-                                {r.k}
-                              </span>
-                            </div>
-                          </Fragment>
-                        ))}
-                      </div>
-                      <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                        {c.deliv.map((dl, _i40) => (
-                          <Fragment key={_i40}>
-                            <span
-                              style={{
-                                fontSize: "13px",
-                                fontWeight: "500",
-                                border: "1px solid #451531",
-                                borderRadius: "999px",
-                                padding: "6px 14px",
-                                whiteSpace: "nowrap",
-                                lineHeight: "1.2",
-                              }}
-                            >
-                              {dl}
-                            </span>
-                          </Fragment>
-                        ))}
-                      </div>
-                    </div>
-                  </article>
-                </Fragment>
-              ))}
-            </div>
-            <div
-              data-r=""
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,420px),1fr))",
-                gap: "clamp(24px,3.4vw,48px)",
-                alignItems: "center",
-                borderTop: "1.5px solid #451531",
-                paddingTop: "clamp(36px,4.4vw,56px)",
-              }}
-            >
-              <div style={{ display: "flex", flexDirection: "column", gap: "16px", maxWidth: "44ch" }}>
-                <span
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "10px",
-                    fontSize: "12.5px",
-                    fontWeight: "600",
-                    letterSpacing: ".12em",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  <i style={{ fontSize: "18px", color: "#B3093F" }} className="ph ph-graduation-cap"></i>Além das campanhas
-                </span>
-                <h3
-                  style={{
-                    margin: "0",
-                    fontFamily: "var(--font-bodoni),serif",
-                    fontVariationSettings: "'opsz' 28",
-                    fontWeight: "400",
-                    fontSize: "clamp(38px,4.4vw,64px)",
-                    lineHeight: ".95",
-                    letterSpacing: "-.02em",
-                  }}
-                >
-                  Conteúdo que <em style={{ color: "#B3093F" }}>ensina</em> e informa
-                </h3>
-                <p style={{ margin: "0", fontSize: "17px", lineHeight: "1.55", textWrap: "pretty" }}>
-                  Dicas de styling, rotina de beleza e moda explicada sem complicar, no tom leve de sempre. Um formato que gera salvamentos
-                  e confiança para as marcas.
-                </p>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                  {v.eduTags.map((t, _i41) => (
-                    <Fragment key={_i41}>
-                      <span
-                        style={{
-                          fontSize: "13px",
-                          fontWeight: "500",
-                          border: "1px solid #451531",
-                          borderRadius: "999px",
-                          padding: "6px 14px",
-                          whiteSpace: "nowrap",
-                          lineHeight: "1.2",
-                        }}
-                      >
-                        {t}
-                      </span>
-                    </Fragment>
-                  ))}
-                </div>
-              </div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3,minmax(0,1fr))", gap: "clamp(10px,1.4vw,18px)" }}>
-                {v.eduSlots.map((x, _i42) => (
-                  <Fragment key={_i42}>
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "8px",
-                        transform: `rotate(${x.rot})`,
-                        transition: "transform .35s cubic-bezier(.2,.8,.2,1)",
-                      }}
-                      className="hv18"
-                    >
-                      <div
-                        style={{
-                          position: "relative",
-                          aspectRatio: "9/16",
-                          borderRadius: "14px",
-                          overflow: "hidden",
-                          border: "1.5px solid #451531",
-                          background: x.bg,
-                          color: "#451531",
-                        }}
-                      >
-                        <Slot ph={"Arraste um conteúdo educativo"} />
-                        <span
-                          style={{
-                            position: "absolute",
-                            left: "8px",
-                            top: "8px",
-                            pointerEvents: "none",
-                            background: "#F8F5F2",
-                            color: "#451531",
-                            borderRadius: "999px",
-                            padding: "4px 10px",
-                            fontSize: "11.5px",
-                            fontWeight: "600",
-                            letterSpacing: ".06em",
-                            textTransform: "uppercase",
-                          }}
-                        >
-                          {x.tag}
-                        </span>
-                      </div>
-                      <span style={{ fontSize: "14px", fontWeight: "600", lineHeight: "1.3" }}>{x.t}</span>
-                    </div>
-                  </Fragment>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
 
         {v.pricingPlans ? (
           <>
@@ -5691,7 +5692,7 @@ export default class MidiaKit extends Component {
                     data-r=""
                     style={{ fontSize: "12.5px", fontWeight: "600", letterSpacing: ".16em", textTransform: "uppercase", color: "#FFB3C9" }}
                   >
-                    N° 06 · Formatos e investimento
+                    N° 07 · Formatos e investimento
                   </span>
                   <h2
                     data-r=""
@@ -6031,7 +6032,7 @@ export default class MidiaKit extends Component {
                         flex: "none",
                       }}
                     ></span>
-                    N° 06 · La carte
+                    N° 07 · La carte
                     <span
                       style={{
                         width: "10px",
@@ -6423,7 +6424,7 @@ export default class MidiaKit extends Component {
                 >
                   <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
                     <span data-r="" style={{ fontSize: "12.5px", fontWeight: "600", letterSpacing: ".12em", textTransform: "uppercase" }}>
-                      N° 06 · Serviços e valores
+                      N° 07 · Serviços e valores
                     </span>
                     <h2
                       data-r=""
@@ -6887,7 +6888,7 @@ export default class MidiaKit extends Component {
                 data-r=""
                 style={{ fontSize: "12.5px", fontWeight: "600", letterSpacing: ".12em", textTransform: "uppercase", color: "#A5BEFA" }}
               >
-                N° 07 · RSVP
+                N° 08 · RSVP
               </span>
               <h2
                 data-r=""
