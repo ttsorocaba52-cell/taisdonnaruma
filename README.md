@@ -79,6 +79,7 @@ public/assets/  imagens
 - Cards das plataformas que viram no hover (desktop) ou no toque (mobile)
 - Polaroids que embaralham ao toque
 - Alternância entre "Pacotes" e "Por formato" na seção de valores; o card em destaque (claro, elevado e com brilho) segue o cursor e volta ao recomendado quando o cursor sai
+- Cases em um visualizador: abas por marca (com o número de destaque de cada uma), um case por vez sempre na mesma ordem (foto e vídeo, depois informações), setas, teclado (← →) e deslizar no celular
 - Botão no fim dos cases ("Ver pacotes e formatos") que abre um painel lateral com os pacotes e formatos; ao escolher um, o painel fecha, a página vai até o RSVP e o formato já vem marcado
 - RSVP que monta um e-mail com os formatos escolhidos
 - Botão de copiar o e-mail de contato

@@ -76,6 +76,7 @@ export default class MidiaKit extends Component {
     menu: false,
     pkgOpen: false,
     reel: -1,
+    caseIdx: 0,
   };
   progRef = createRef();
   followRef = createRef();
@@ -102,6 +103,13 @@ export default class MidiaKit extends Component {
   }
   componentDidUpdate(_, prev) {
     this.observeNew();
+    if (prev.caseIdx !== this.state.caseIdx) {
+      if (this.io4) document.querySelectorAll("video[data-autoplay]").forEach((el) => this.io4.observe(el));
+      setupMetricFocus();
+      const tab = document.getElementById("case-tab-" + this.state.caseIdx);
+      const bar = tab?.parentElement;
+      if (tab && bar && bar.scrollWidth > bar.clientWidth) bar.scrollTo({ left: tab.offsetLeft - 16, behavior: "smooth" });
+    }
     // trava a rolagem da página enquanto o menu do celular está aberto
     const locked = this.state.menu || this.state.pkgOpen || this.state.reel >= 0;
     if (prev.menu !== this.state.menu || prev.pkgOpen !== this.state.pkgOpen || prev.reel !== this.state.reel)
@@ -199,6 +207,9 @@ export default class MidiaKit extends Component {
     this.setState({ reel: -1 });
     this.reelReturn?.focus?.({ preventScroll: true });
   };
+  // visualizador de cases
+  setCase = (i) => this.setState({ caseIdx: (i + 4) % 4 });
+  stepCase = (d) => this.setState((st) => ({ caseIdx: (st.caseIdx + d + 4) % 4 }));
   stepReel = (d) => this.setState((st) => ({ reel: (st.reel + d + 4) % 4 }));
   goId(id) {
     const s = document.getElementById(id);
@@ -606,6 +617,27 @@ export default class MidiaKit extends Component {
       closeMenu: () => this.setState({ menu: false }),
       pkgOpen: this.state.pkgOpen,
       reel: this.state.reel,
+      caseIdx: this.state.caseIdx,
+      nextCase: () => this.stepCase(1),
+      prevCase: () => this.stepCase(-1),
+      caseKeys: (e) => {
+        const k = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+        if (!k) return;
+        e.preventDefault();
+        const i = (this.state.caseIdx + k + 4) % 4;
+        this.setCase(i);
+        document.getElementById("case-tab-" + i)?.focus();
+      },
+      caseTouchStart: (e) => {
+        this.touchX = e.touches[0].clientX;
+        this.touchY = e.touches[0].clientY;
+      },
+      caseTouchEnd: (e) => {
+        // deslizar para os lados troca de case (ignora rolagem vertical)
+        const dx = e.changedTouches[0].clientX - this.touchX,
+          dy = e.changedTouches[0].clientY - this.touchY;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) this.stepCase(dx < 0 ? 1 : -1);
+      },
       closeReel: this.closeReel,
       nextReel: () => this.stepReel(1),
       prevReel: () => this.stepReel(-1),
@@ -943,6 +975,7 @@ export default class MidiaKit extends Component {
         // publi completa (com som, abre no player) + prévia curta sem som que roda no card
         ...publi(PUBLIS[i]),
         play: () => this.openReel(i),
+        select: () => this.setCase(i),
       })),
       menu: [
         {
@@ -2734,204 +2767,99 @@ export default class MidiaKit extends Component {
                 </span>
               </div>
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "clamp(56px,7vw,110px)" }}>
-              {v.cases.map((c, _i38) => (
-                <Fragment key={_i38}>
-                  <article
-                    data-r=""
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,380px),1fr))",
-                      gap: "clamp(28px,4vw,72px)",
-                      alignItems: "center",
-                    }}
+            {/* Visualizador de cases: abas por marca + um case por vez, sempre na mesma ordem (mídia, depois informações) */}
+            <div data-r="" className="cv">
+              <div className="cv-tabs" role="tablist" aria-label="Cases" onKeyDown={v.caseKeys}>
+                {v.cases.map((t, i) => (
+                  <button
+                    key={t.brand}
+                    type="button"
+                    role="tab"
+                    id={"case-tab-" + i}
+                    aria-selected={i === v.caseIdx}
+                    aria-controls="case-panel"
+                    tabIndex={i === v.caseIdx ? 0 : -1}
+                    className={i === v.caseIdx ? "cv-tab on" : "cv-tab"}
+                    onClick={t.select}
                   >
-                    <div style={{ order: c.imgOrder, position: "relative", padding: "0 clamp(0px,3vw,40px) clamp(30px,4vw,56px) 0" }}>
-                      <div
-                        style={{
-                          position: "relative",
-                          aspectRatio: "4/5",
-                          borderRadius: c.radius,
-                          overflow: "hidden",
-                          background: "#DCE5FD",
-                          transition: "transform .6s cubic-bezier(.2,.8,.2,1)",
-                        }}
-                        className="hv17"
-                      >
-                        <Slot src={c.src} ph={c.ph} />
-                      </div>
-                      <div
-                        style={{
-                          position: "absolute",
-                          right: "0",
-                          bottom: "0",
-                          width: "38%",
-                          aspectRatio: "9/16",
-                          borderRadius: "16px",
-                          overflow: "hidden",
-                          background: "#A5BEFA",
-                          border: "6px solid #F8F5F2",
-                          boxShadow: "0 22px 44px rgba(69,21,49,.22)",
-                          transform: `rotate(${c.rot})`,
-                        }}
-                      >
-                        {/* prévia sem som da publi; clique abre o vídeo completo com som */}
-                        <button type="button" className="case-reel" onClick={c.play} aria-label={"Assistir à publi da " + c.brand}>
-                          <video
-                            data-autoplay=""
-                            src={c.preview}
-                            poster={c.poster}
-                            muted
-                            loop
-                            playsInline
-                            preload="none"
-                            aria-hidden="true"
-                            tabIndex={-1}
-                          />
-                          <span className="case-reel-play">
-                            <i className="ph-fill ph-play"></i>
-                          </span>
-                          <span className="case-reel-time">{c.dur}</span>
-                        </button>
-                      </div>
-                      <span
-                        style={{
-                          position: "absolute",
-                          left: "16px",
-                          top: "16px",
-                          background: "#F8F5F2",
-                          color: "#451531",
-                          borderRadius: "999px",
-                          padding: "6px 14px",
-                          fontSize: "12px",
-                          fontWeight: "600",
-                          letterSpacing: ".1em",
-                          textTransform: "uppercase",
-                          whiteSpace: "nowrap",
-                          lineHeight: "1.2",
-                        }}
-                      >
-                        {c.platform}
-                      </span>
+                    <span className="cv-tab-n">{t.n}</span>
+                    <span className="cv-tab-brand">{t.brand}</span>
+                    <span className="cv-tab-kpi">
+                      <b>{t.res[0].v}</b> {t.res[0].k}
+                    </span>
+                  </button>
+                ))}
+              </div>
+              {[v.cases[v.caseIdx]].map((c) => (
+                <article
+                  key={c.brand}
+                  id="case-panel"
+                  role="tabpanel"
+                  aria-labelledby={"case-tab-" + v.caseIdx}
+                  className="cv-panel"
+                  onTouchStart={v.caseTouchStart}
+                  onTouchEnd={v.caseTouchEnd}
+                >
+                  <div className="cv-media">
+                    <div className="cv-photo">
+                      <Slot src={c.src} ph={c.ph} />
                     </div>
-                    <div style={{ order: c.txtOrder, display: "flex", flexDirection: "column", gap: "22px" }}>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "baseline",
-                          gap: "16px",
-                          borderBottom: "1px solid #451531",
-                          paddingBottom: "14px",
-                        }}
-                      >
-                        <span
-                          style={{
-                            fontFamily: "var(--font-bodoni),serif",
-                            fontVariationSettings: "'opsz' 28",
-                            fontStyle: "italic",
-                            fontSize: "24px",
-                            color: "#B3093F",
-                          }}
-                        >
-                          {c.n}
-                        </span>
-                        <span
-                          style={{
-                            fontSize: "12.5px",
-                            fontWeight: "600",
-                            letterSpacing: ".12em",
-                            textTransform: "uppercase",
-                            color: "#6B4A5C",
-                            whiteSpace: "nowrap",
-                          }}
-                        >
-                          {c.type}
-                        </span>
-                      </div>
-                      <h3
-                        style={{
-                          margin: "0",
-                          fontFamily: "var(--font-bodoni),serif",
-                          fontVariationSettings: "'opsz' 28",
-                          fontWeight: "400",
-                          fontSize: "clamp(44px,5.4vw,84px)",
-                          lineHeight: ".92",
-                          letterSpacing: "-.02em",
-                        }}
-                      >
-                        {c.brand}
-                      </h3>
-                      <p style={{ margin: "0", fontSize: "17px", lineHeight: "1.6", maxWidth: "44ch", textWrap: "pretty" }}>{c.desc}</p>
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3,minmax(0,1fr))", gap: "12px", marginTop: "6px" }}>
-                        {c.res.map((r, _i39) => (
-                          <Fragment key={_i39}>
-                            <div
-                              style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                gap: "6px",
-                                padding: "16px 14px",
-                                border: "1px solid rgba(69,21,49,.25)",
-                                borderRadius: "14px",
-                                background: "#FCFAF8",
-                              }}
-                            >
-                              <span
-                                style={{
-                                  fontFamily: "var(--font-hanken),sans-serif",
-                                  fontVariantNumeric: "tabular-nums lining-nums",
-                                  fontWeight: "500",
-                                  fontSize: "clamp(28px,2.8vw,40px)",
-                                  lineHeight: "1",
-                                  letterSpacing: "-.035em",
-                                  color: "#451531",
-                                }}
-                              >
-                                {r.v}
-                              </span>
-                              <span
-                                style={{
-                                  fontSize: "12px",
-                                  fontWeight: "600",
-                                  letterSpacing: ".08em",
-                                  textTransform: "uppercase",
-                                  color: "#6B4A5C",
-                                }}
-                              >
-                                {r.k}
-                              </span>
-                            </div>
-                          </Fragment>
-                        ))}
-                      </div>
-                      <button type="button" className="case-watch" onClick={c.play}>
-                        <span className="case-watch-icon">
+                    <div className="cv-reel">
+                      {/* prévia sem som da publi; clique abre o vídeo completo com som */}
+                      <button type="button" className="case-reel" onClick={c.play} aria-label={"Assistir à publi da " + c.brand}>
+                        <video
+                          data-autoplay=""
+                          src={c.preview}
+                          poster={c.poster}
+                          muted
+                          loop
+                          playsInline
+                          preload="none"
+                          aria-hidden="true"
+                          tabIndex={-1}
+                        />
+                        <span className="case-reel-play">
                           <i className="ph-fill ph-play"></i>
                         </span>
-                        Assistir à publi <span className="case-watch-dur">{c.dur}</span>
+                        <span className="case-reel-time">{c.dur}</span>
                       </button>
-                      <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                        {c.deliv.map((dl, _i40) => (
-                          <Fragment key={_i40}>
-                            <span
-                              style={{
-                                fontSize: "13px",
-                                fontWeight: "500",
-                                border: "1px solid #451531",
-                                borderRadius: "999px",
-                                padding: "6px 14px",
-                                whiteSpace: "nowrap",
-                                lineHeight: "1.2",
-                              }}
-                            >
-                              {dl}
-                            </span>
-                          </Fragment>
-                        ))}
-                      </div>
                     </div>
-                  </article>
-                </Fragment>
+                    <span className="cv-platform">{c.platform}</span>
+                  </div>
+                  <div className="cv-info">
+                    <div className="cv-type">
+                      <span className="cv-n">{c.n}</span>
+                      <span>{c.type}</span>
+                    </div>
+                    <h3>{c.brand}</h3>
+                    <p>{c.desc}</p>
+                    <div className="cv-res">
+                      {c.res.map((r) => (
+                        <div key={r.k}>
+                          <span style={{ fontVariantNumeric: "tabular-nums lining-nums" }}>{r.v}</span>
+                          <span>{r.k}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <button type="button" className="case-watch" onClick={c.play}>
+                      <span className="case-watch-icon">
+                        <i className="ph-fill ph-play"></i>
+                      </span>
+                      Assistir à publi <span className="case-watch-dur">{c.dur}</span>
+                    </button>
+                    <div className="cv-nav">
+                      <button type="button" onClick={v.prevCase} aria-label="Case anterior">
+                        <i className="ph ph-arrow-left"></i>
+                      </button>
+                      <span>
+                        <b>{c.n}</b> / 0{v.cases.length}
+                      </span>
+                      <button type="button" onClick={v.nextCase} aria-label="Próximo case">
+                        <i className="ph ph-arrow-right"></i>
+                      </button>
+                    </div>
+                  </div>
+                </article>
               ))}
             </div>
             {/* Atalho para os pacotes sem precisar rolar até o fim da página */}
