@@ -46,11 +46,11 @@ function Slot({ src, ph }) {
 }
 
 export default class MidiaKit extends Component {
-  state = { fmt: false, active: 0, copied: false, flip: -1, pol: 0, prog: -1, sel: [], vw: null, planHover: -1 };
+  state = { fmt: false, active: 0, copied: false, flip: -1, pol: 0, prog: -1, sel: [], vw: null, planHover: -1, menu: false };
   progRef = createRef();
   followRef = createRef();
   rootRef = createRef();
-  onResize = () => this.setState({ vw: window.innerWidth });
+  onResize = () => this.setState((st) => ({ vw: window.innerWidth, menu: window.innerWidth < 760 ? st.menu : false }));
 
   componentDidMount() {
     this.io2 = new IntersectionObserver(
@@ -66,16 +66,24 @@ export default class MidiaKit extends Component {
     this.tf = setTimeout(() => setupMetricFocus(), 60);
     this.onResize();
     window.addEventListener("resize", this.onResize);
+    window.addEventListener("keydown", this.onKey);
   }
-  componentDidUpdate() {
+  componentDidUpdate(_, prev) {
     this.observeNew();
+    // trava a rolagem da página enquanto o menu do celular está aberto
+    if (prev.menu !== this.state.menu) document.documentElement.style.overflow = this.state.menu ? "hidden" : "";
   }
+  onKey = (e) => {
+    if (e.key === "Escape" && this.state.menu) this.setState({ menu: false });
+  };
   componentWillUnmount() {
     clearTimeout(this.t);
     clearTimeout(this.tf);
     clearTimeout(this.t0);
     clearTimeout(this.tc);
     window.removeEventListener("resize", this.onResize);
+    window.removeEventListener("keydown", this.onKey);
+    document.documentElement.style.overflow = "";
     this.io && this.io.disconnect();
     this.io2 && this.io2.disconnect();
     this.io3 && this.io3.disconnect();
@@ -511,8 +519,21 @@ export default class MidiaKit extends Component {
         e.preventDefault();
         window.scrollTo({ top: 0, behavior: "smooth" });
       },
-      goContact: () => this.go(6),
-      nav: navRaw.map(([label, i]) => ({ label, go: () => this.go(i), fg: i === active ? "#B3093F" : "#451531" })),
+      goContact: () => {
+        this.setState({ menu: false });
+        this.go(6);
+      },
+      menuOpen: this.state.menu,
+      toggleMenu: () => this.setState((st) => ({ menu: !st.menu })),
+      closeMenu: () => this.setState({ menu: false }),
+      nav: navRaw.map(([label, i]) => ({
+        label,
+        go: () => {
+          this.setState({ menu: false });
+          this.go(i);
+        },
+        fg: i === active ? "#B3093F" : "#451531",
+      })),
       heroStats: [
         { v: "258K", k: "Instagram", icon: "ph ph-instagram-logo", go: () => this.goId("s03-ig") },
         { v: "412K", k: "TikTok", icon: "ph ph-tiktok-logo", go: () => this.goId("s03-tt") },
@@ -984,7 +1005,7 @@ export default class MidiaKit extends Component {
             >
               T<span style={{ color: "#B3093F", fontStyle: "normal", fontSize: "14px" }}>✦</span>D
             </a>
-            <div style={{ display: "flex", alignItems: "center", gap: "clamp(12px,2.2vw,30px)", overflowX: "auto" }}>
+            <div className="nav-links" style={{ display: "flex", alignItems: "center", gap: "clamp(12px,2.2vw,30px)", overflowX: "auto" }}>
               {v.nav.map((item, _i1) => (
                 <Fragment key={_i1}>
                   <button
@@ -1034,8 +1055,37 @@ export default class MidiaKit extends Component {
             >
               RSVP
             </button>
+            <button
+              className="nav-burger"
+              onClick={v.toggleMenu}
+              aria-label={v.menuOpen ? "Fechar menu" : "Abrir menu"}
+              aria-expanded={v.menuOpen}
+              aria-controls="menu-mobile"
+            >
+              <i className={v.menuOpen ? "ph ph-x" : "ph ph-list"} style={{ fontSize: "22px" }}></i>
+            </button>
           </div>
         </nav>
+        {/* Menu do celular (abaixo de 760px): tela cheia com os links */}
+        <div id="menu-mobile" className={v.menuOpen ? "menu-mobile open" : "menu-mobile"} aria-hidden={!v.menuOpen} onClick={v.closeMenu}>
+          <div className="menu-mobile-inner" onClick={(e) => e.stopPropagation()}>
+            <span className="menu-mobile-kicker">Mídia kit · Edição 2026</span>
+            <ul>
+              {v.nav.map((item, i) => (
+                <li key={i} style={{ transitionDelay: v.menuOpen ? 80 + i * 45 + "ms" : "0ms" }}>
+                  <button onClick={item.go} tabIndex={v.menuOpen ? 0 : -1} style={{ color: item.fg === "#B3093F" ? "#FF8FB0" : "#F8F5F2" }}>
+                    <span>{"0" + (i + 1)}</span>
+                    {item.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <button className="menu-mobile-cta" onClick={v.goContact} tabIndex={v.menuOpen ? 0 : -1}>
+              Vamos criar juntos <i className="ph ph-arrow-right"></i>
+            </button>
+            <span className="menu-mobile-foot">@taisdonnaruma</span>
+          </div>
+        </div>
 
         <section
           id="s01"
@@ -1073,7 +1123,7 @@ export default class MidiaKit extends Component {
             >
               <HeroMotion />
             </div>
-            <div
+            <div className="hero-stats"
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,200px),1fr))",
@@ -1412,7 +1462,7 @@ export default class MidiaKit extends Component {
                   padding: "0",
                   cursor: "pointer",
                   position: "relative",
-                  width: "min(100%,380px)",
+                  width: "min(calc(100% - 84px),380px)",
                   aspectRatio: "4/5",
                 }}
               >
@@ -1842,10 +1892,10 @@ export default class MidiaKit extends Component {
                 <i style={{ fontSize: "15px" }} className="ph ph-cursor-click"></i>Passe o mouse ou toque para ver os insights
               </span>
             </div>
-            <div
+            <div className="plat-cards"
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,300px),1fr))",
+                gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,210px),1fr))",
                 gap: "clamp(16px,2vw,26px)",
                 marginTop: "clamp(36px,5vw,64px)",
               }}
@@ -1858,7 +1908,7 @@ export default class MidiaKit extends Component {
                     onMouseEnter={p.enter}
                     onMouseLeave={p.leave}
                     onClick={p.toggle}
-                    style={{ perspective: "1400px", cursor: "pointer" }}
+                    style={{ perspective: "1400px", cursor: "pointer", containerType: "inline-size" }}
                   >
                     <div
                       style={{
@@ -1879,7 +1929,7 @@ export default class MidiaKit extends Component {
                           display: "flex",
                           flexDirection: "column",
                           gap: "18px",
-                          minHeight: "440px",
+                          minHeight: "var(--plat-h,440px)",
                           position: "relative",
                         }}
                       >
@@ -1915,7 +1965,7 @@ export default class MidiaKit extends Component {
                               fontFamily: "var(--font-hanken),sans-serif",
                               fontVariantNumeric: "tabular-nums lining-nums",
                               fontWeight: "500",
-                              fontSize: "clamp(96px,10vw,150px)",
+                              fontSize: "clamp(56px,32cqi,150px)",
                               lineHeight: ".85",
                               letterSpacing: "-.035em",
                             }}
@@ -1970,7 +2020,7 @@ export default class MidiaKit extends Component {
                           display: "flex",
                           flexDirection: "column",
                           gap: "14px",
-                          minHeight: "440px",
+                          minHeight: "var(--plat-h,440px)",
                         }}
                       >
                         <div
@@ -2035,10 +2085,10 @@ export default class MidiaKit extends Component {
                 </Fragment>
               ))}
             </div>
-            <div
+            <div className="totals"
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,260px),1fr))",
+                gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,200px),1fr))",
                 marginTop: "clamp(36px,5vw,64px)",
                 borderTop: "1px solid rgba(248,245,242,.35)",
               }}
@@ -2356,7 +2406,7 @@ export default class MidiaKit extends Component {
                 </div>
               </div>
             </div>
-            <div
+            <div className="kpi-grid"
               data-r=""
               style={{
                 display: "grid",
@@ -3403,7 +3453,7 @@ export default class MidiaKit extends Component {
                 </div>
               </div>
             </div>
-            <div
+            <div className="kpi-grid"
               data-r=""
               style={{
                 display: "grid",
@@ -3840,12 +3890,12 @@ export default class MidiaKit extends Component {
                 >
                   NO <em style={{ color: "#64B7CC" }}>TikTok</em>
                 </h3>
-                <div data-r="" data-d="100" style={{ display: "flex", alignItems: "flex-end", gap: "14px" }}>
+                <div data-r="" data-d="100" style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-end", gap: "10px 14px" }}>
                   <span
                     style={{
                       fontFamily: "var(--font-hanken),sans-serif",
                       fontVariantNumeric: "tabular-nums lining-nums",
-                      fontSize: "clamp(80px,8.4vw,136px)",
+                      fontSize: "clamp(68px,8.4vw,136px)",
                       lineHeight: ".85",
                       letterSpacing: "-.035em",
                     }}
@@ -4021,7 +4071,7 @@ export default class MidiaKit extends Component {
                 <span style={{ fontSize: "12.5px", fontWeight: "600", letterSpacing: ".1em", textTransform: "uppercase" }}>
                   Vídeos em destaque
                 </span>
-                <div
+                <div className="tt-vids"
                   style={{
                     display: "grid",
                     gridTemplateColumns: "repeat(auto-fit,minmax(min(46%,160px),1fr))",
@@ -4428,7 +4478,7 @@ export default class MidiaKit extends Component {
                 </div>
               </div>
             </div>
-            <div
+            <div className="kpi-grid"
               data-r=""
               style={{
                 display: "grid",
@@ -7005,10 +7055,10 @@ export default class MidiaKit extends Component {
                 data-spin=""
                 style={{
                   position: "absolute",
-                  right: "-30px",
+                  right: "clamp(-30px,-1.6vw,-8px)",
                   top: "-34px",
-                  width: "96px",
-                  height: "96px",
+                  width: "clamp(78px,20vw,96px)",
+                  height: "clamp(78px,20vw,96px)",
                   borderRadius: "50%",
                   background: "#FF3877",
                   color: "#FFFDF9",

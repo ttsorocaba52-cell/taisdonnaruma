@@ -81,3 +81,4 @@ public/assets/  imagens
 - Botão de copiar o e-mail de contato
 - Colagem de adesivos nas margens apenas em telas a partir de 1200px
 - Respeita `prefers-reduced-motion`, desligando as animações
+- Responsivo de 320px a telas largas: menu em tela cheia no celular (abaixo de 760px), grades sem cards sozinhos na última linha, KPIs em 2 colunas no celular e 3 no tablet, vídeos do TikTok em faixa com rolagem lateral no celular

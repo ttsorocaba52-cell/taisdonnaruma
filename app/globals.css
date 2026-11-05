@@ -109,3 +109,248 @@ a:hover {
     border-color 0.45s ease,
     transform 0.25s ease !important;
 }
+
+/* ---------- Navegação responsiva ---------- */
+.nav-burger {
+  display: none;
+  appearance: none;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  place-items: center;
+  border: 1px solid rgba(69, 21, 49, 0.35);
+  border-radius: 999px;
+  background: transparent;
+  color: #451531;
+  cursor: pointer;
+}
+.menu-mobile {
+  display: none;
+}
+
+@media (max-width: 759px) {
+  .nav-links {
+    display: none !important;
+  }
+  .nav-burger {
+    display: grid;
+  }
+  /* RSVP + menu ficam juntos à direita */
+  nav .nav-burger {
+    margin-left: -6px;
+  }
+  .menu-mobile {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 79;
+    padding: 76px 20px 28px;
+    background: #451531;
+    color: #f8f5f2;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.35s ease,
+      visibility 0s linear 0.35s;
+    overflow-y: auto;
+  }
+  .menu-mobile.open {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.35s ease;
+  }
+  .menu-mobile-inner {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .menu-mobile-kicker,
+  .menu-mobile-foot {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #a5befa;
+  }
+  .menu-mobile-foot {
+    margin-top: auto;
+    color: #e9dde5;
+  }
+  .menu-mobile ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid rgba(248, 245, 242, 0.25);
+  }
+  .menu-mobile li {
+    border-bottom: 1px solid rgba(248, 245, 242, 0.25);
+    opacity: 0;
+    translate: 0 14px;
+    transition:
+      opacity 0.5s cubic-bezier(0.2, 0.7, 0.1, 1),
+      translate 0.5s cubic-bezier(0.2, 0.7, 0.1, 1);
+  }
+  .menu-mobile.open li {
+    opacity: 1;
+    translate: 0 0;
+  }
+  .menu-mobile li button {
+    appearance: none;
+    width: 100%;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding: 14px 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    font-family: var(--font-bodoni), serif;
+    font-variation-settings: "opsz" 28;
+    font-size: clamp(34px, 10vw, 46px);
+    line-height: 1;
+  }
+  .menu-mobile li button span {
+    font-family: var(--font-hanken), sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: #ff8fb0;
+  }
+  .menu-mobile-cta {
+    appearance: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px;
+    border: 0;
+    border-radius: 999px;
+    background: #ff3877;
+    color: #fffdf9;
+    font-family: var(--font-hanken), sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+}
+
+/* ---------- Ajustes responsivos ---------- */
+@media (max-width: 759px) {
+  /* RSVP fica junto do botão de menu, à direita */
+  nav .hv2 {
+    margin-left: auto;
+  }
+}
+
+/* Capa: frase em cima e os 3 números lado a lado (sem card sozinho na linha) */
+@media (max-width: 899px) {
+  .hero-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+  .hero-stats > p {
+    grid-column: 1 / -1;
+    padding-right: 0 !important;
+  }
+  .hero-stats > button:first-of-type {
+    border-left: 0 !important;
+    padding-left: 0 !important;
+  }
+}
+@media (max-width: 559px) {
+  .hero-stats > button {
+    padding: 14px 8px 16px 12px !important;
+  }
+  .hero-stats > button > span:first-child {
+    font-size: clamp(28px, 9vw, 40px) !important;
+  }
+  .hero-stats > button > span:last-child {
+    font-size: 11px !important;
+    letter-spacing: 0.08em !important;
+    gap: 5px !important;
+  }
+}
+
+/* Totais e KPIs: 3 colunas no tablet; no celular, totais empilhados e KPIs em 2 colunas */
+@media (min-width: 560px) and (max-width: 899px) {
+  .totals,
+  .kpi-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+@media (max-width: 559px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  .kpi-grid > div {
+    padding: 16px 14px 18px !important;
+    gap: 6px !important;
+  }
+  .kpi-grid > div > span:first-child {
+    flex-wrap: wrap;
+    gap: 4px 8px !important;
+    font-size: 11px !important;
+  }
+  .kpi-grid [style*="tabular-nums"] {
+    font-size: clamp(30px, 9.4vw, 46px) !important;
+  }
+  .kpi-grid > div > span:last-child {
+    font-size: 13px !important;
+  }
+}
+
+/* Cards das plataformas: 3 colunas a partir do tablet */
+@media (min-width: 700px) {
+  .plat-cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+/* rótulos longos dos KPIs quebram linha em vez de estourar a célula */
+@media (max-width: 899px) {
+  .kpi-grid > div > span:first-child,
+  .kpi-grid > div > span:first-child * {
+    white-space: normal !important;
+    flex-wrap: wrap;
+  }
+}
+
+/* Cards das plataformas mais baixos no celular */
+@media (max-width: 699px) {
+  .plat-cards {
+    --plat-h: 340px;
+  }
+}
+
+/* TikTok · vídeos em destaque: 5 lado a lado no tablet; faixa com rolagem lateral no celular */
+@media (min-width: 560px) and (max-width: 899px) {
+  .tt-vids {
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  }
+}
+@media (max-width: 559px) {
+  .tt-vids {
+    grid-template-columns: none !important;
+    grid-auto-flow: column;
+    grid-auto-columns: 44%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    margin-right: calc(clamp(16px, 3.5vw, 48px) * -1);
+    padding-right: clamp(16px, 3.5vw, 48px);
+  }
+  .tt-vids::-webkit-scrollbar {
+    display: none;
+  }
+  .tt-vids > * {
+    scroll-snap-align: start;
+  }
+}
+
+/* KPIs entre 900px e 1199px: 3 colunas (evita 2+2+2 com células largas demais) */
+@media (min-width: 900px) and (max-width: 1199px) {
+  .kpi-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
