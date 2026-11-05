@@ -1,0 +1,68 @@
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #f8f5f2;
+  color: #451531;
+  font-family: var(--font-hanken), sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: #451531;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #b3093f;
+}
+
+::selection {
+  background: #dce5fd;
+  color: #451531;
+}
+
+:focus-visible {
+  outline: 2px solid #b3093f;
+  outline-offset: 3px;
+}
+
+/* Reveal on scroll (html.rv is set before paint unless reduced motion is preferred) */
+.rv [data-r] {
+  opacity: 0;
+  translate: 0 28px;
+  transition:
+    opacity 1s cubic-bezier(0.2, 0.7, 0.1, 1) var(--d, 0ms),
+    translate 1s cubic-bezier(0.2, 0.7, 0.1, 1) var(--d, 0ms);
+}
+.rv [data-r].in {
+  opacity: 1;
+  translate: 0 0;
+}
+.rv [data-ri] {
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1.4s cubic-bezier(0.7, 0, 0.2, 1) var(--d, 0ms);
+}
+.rv [data-ri].in {
+  clip-path: inset(0 0 0% 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
