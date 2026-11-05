@@ -2765,22 +2765,6 @@ export default class MidiaKit extends Component {
                 <p style={{ margin: "0", fontSize: "18px", lineHeight: "1.5" }}>
                   Campanhas criadas junto com as marcas, com o jeito leve e bem-humorado da Tais.
                 </p>
-                <span
-                  style={{
-                    fontSize: "12px",
-                    fontWeight: "600",
-                    letterSpacing: ".1em",
-                    textTransform: "uppercase",
-                    color: "#B3093F",
-                    border: "1px solid #B3093F",
-                    borderRadius: "999px",
-                    padding: "5px 12px",
-                    whiteSpace: "nowrap",
-                    lineHeight: "1.2",
-                  }}
-                >
-                  Cases e números provisórios
-                </span>
               </div>
             </div>
             {/* Visualizador de cases: abas por marca + um case por vez, sempre na mesma ordem (mídia, depois informações) */}
