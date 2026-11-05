@@ -45,13 +45,15 @@ function Slot({ src, ph }) {
   );
 }
 
-// Vídeos das publis, na ordem dos cases (Aura, Riachuelo, 70mai, Nyma)
+// Vídeos das publis, na ordem dos cases (Aura, Riachuelo, 70mai, Nyma, Couple2)
 const PUBLIS = [
   { slug: "aura", dur: "0:16" },
   { slug: "riachuelo", dur: "1:18" },
   { slug: "70mai", dur: "0:42" },
   { slug: "nyma", dur: "1:01" },
+  { slug: "couple2", dur: "0:58" },
 ];
+const N_CASES = PUBLIS.length;
 const publi = ({ slug, dur }) => ({
   video: `/assets/publis/${slug}.mp4`,
   preview: `/assets/publis/${slug}-preview.mp4`,
@@ -208,9 +210,9 @@ export default class MidiaKit extends Component {
     this.reelReturn?.focus?.({ preventScroll: true });
   };
   // visualizador de cases
-  setCase = (i) => this.setState({ caseIdx: (i + 4) % 4 });
-  stepCase = (d) => this.setState((st) => ({ caseIdx: (st.caseIdx + d + 4) % 4 }));
-  stepReel = (d) => this.setState((st) => ({ reel: (st.reel + d + 4) % 4 }));
+  setCase = (i) => this.setState({ caseIdx: (i + N_CASES) % N_CASES });
+  stepCase = (d) => this.setState((st) => ({ caseIdx: (st.caseIdx + d + N_CASES) % N_CASES }));
+  stepReel = (d) => this.setState((st) => ({ reel: (st.reel + d + N_CASES) % N_CASES }));
   goId(id) {
     const s = document.getElementById(id);
     if (s) window.scrollTo({ top: s.getBoundingClientRect().top + window.scrollY - 40, behavior: "smooth" });
@@ -624,7 +626,7 @@ export default class MidiaKit extends Component {
         const k = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
         if (!k) return;
         e.preventDefault();
-        const i = (this.state.caseIdx + k + 4) % 4;
+        const i = (this.state.caseIdx + k + N_CASES) % N_CASES;
         this.setCase(i);
         document.getElementById("case-tab-" + i)?.focus();
       },
@@ -955,18 +957,32 @@ export default class MidiaKit extends Component {
           ],
           deliv: [],
         },
+        {
+          brand: "Couple2",
+          type: "Publi · app para casais",
+          platform: "Vídeo · esquete de casal",
+          desc: "Esquete de casal com o namorado apresentando o Couple2, o app para casais: contador de dias juntos, localização e lembrete das datas importantes, no humor do dia a dia da Tais.",
+          res: [
+            { v: "4,9M", k: "Visualizações" },
+            { v: "346K", k: "Curtidas" },
+            { v: "5.129", k: "Reposts" },
+            { v: "1.499", k: "Comentários" },
+          ],
+          deliv: [],
+        },
       ].map((c, i) => ({
         ...c,
         n: "0" + (i + 1),
-        id: ["v8-case-aura", "v8-case-riachuelo", "v8-case-70mai", "v8-case-nyma"][i],
+        id: ["v8-case-aura", "v8-case-riachuelo", "v8-case-70mai", "v8-case-nyma", "v8-case-couple2"][i],
         id2: "v7-case-" + (i + 1) + "b",
         src: [
           "/assets/fotos/aura-case.webp",
           "/assets/fotos/riachuelo-case.webp",
           "/assets/fotos/70mai-case.webp",
           "/assets/fotos/nyma-case.webp",
+          "/assets/fotos/couple2-case.webp",
         ][i],
-        src2: ["/assets/fotos/f15.webp", "/assets/fotos/f05.webp", "/assets/fotos/f06.webp", "/assets/fotos/f12.webp"][i],
+        src2: ["/assets/fotos/f15.webp", "/assets/fotos/f05.webp", "/assets/fotos/f06.webp", "/assets/fotos/f12.webp", "/assets/fotos/f02.webp"][i],
         ph: "Foto da campanha",
         imgOrder: i % 2 ? 2 : 1,
         txtOrder: i % 2 ? 1 : 2,

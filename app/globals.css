@@ -1302,3 +1302,19 @@ a:hover {
     font-size: 16px;
   }
 }
+
+/* Cases: 5 abas no desktop; resultados com 4 números (ex.: Couple2) em 4 colunas, 2x2 no celular */
+.cv-tabs {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+.cv-res:has(> :nth-child(4)) {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.cv-res:has(> :nth-child(4)) > div {
+  padding: 14px 12px;
+}
+@media (max-width: 1199px) {
+  .cv-res:has(> :nth-child(4)) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
