@@ -2,29 +2,37 @@
 // Banner da capa em motion: toca uma vez e termina parado no último frame.
 // Celular (abaixo de 760px) usa a versão vertical 9:16; tablet e desktop, a horizontal 16:9.
 // Quem prefere menos movimento, ou não consegue dar autoplay, vê direto a imagem final.
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 export const MOBILE_QUERY = "(max-width: 759px)";
 const SRC = {
   desktop: { webm: "/assets/banner-hero.webm", mp4: "/assets/banner-hero.mp4", still: "/assets/banner-hero-end.webp" },
   mobile: { webm: "/assets/banner-hero-mobile.webm", mp4: "/assets/banner-hero-mobile.mp4", still: "/assets/banner-hero-mobile-end.webp" },
 };
+// tamanho da tela lido direto do navegador (null no servidor: nenhum vídeo é baixado antes da hidratação)
+const subscribe = (cb) => {
+  const mq = matchMedia(MOBILE_QUERY);
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+};
+const isMobileNow = () => matchMedia(MOBILE_QUERY).matches;
+const onServer = () => null;
+
 const fill = { position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" };
 
 export default function HeroMotion({ alt = "Tais Donnaruma · Mídia kit" }) {
   const ref = useRef(null);
   // qual vídeo usar só é decidido no navegador, para baixar apenas um deles
-  const [variant, setVariant] = useState(null);
+  const mobile = useSyncExternalStore(subscribe, isMobileNow, onServer);
+  const variant = mobile == null ? null : mobile ? "mobile" : "desktop";
   // wait: carregando · playing: vídeo tocando · done: imagem final fixa
   const [phase, setPhase] = useState("wait");
   const [played, setPlayed] = useState(false);
 
+  // girou o aparelho ou redimensionou a janela: fica na imagem final da outra versão
   useEffect(() => {
     const mq = matchMedia(MOBILE_QUERY);
-    setVariant(mq.matches ? "mobile" : "desktop");
-    // girou o aparelho ou redimensionou a janela: troca para a imagem final da outra versão
-    const onChange = (e) => {
-      setVariant(e.matches ? "mobile" : "desktop");
+    const onChange = () => {
       setPlayed(false);
       setPhase("done");
     };
@@ -62,7 +70,6 @@ export default function HeroMotion({ alt = "Tais Donnaruma · Mídia kit" }) {
       {/* a imagem final certa para cada tela, mesmo antes do JavaScript */}
       <picture>
         <source media={MOBILE_QUERY} srcSet={SRC.mobile.still} />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={SRC.desktop.still}
           alt={alt}
@@ -75,7 +82,7 @@ export default function HeroMotion({ alt = "Tais Donnaruma · Mídia kit" }) {
         key={variant || "none"}
         muted
         playsInline
-        preload={src ? "auto" : "none"}
+        preload={src && phase !== "done" ? "auto" : "none"}
         aria-hidden="true"
         tabIndex={-1}
         disablePictureInPicture
@@ -92,8 +99,7 @@ export default function HeroMotion({ alt = "Tais Donnaruma · Mídia kit" }) {
       <noscript>
         <picture>
           <source media={MOBILE_QUERY} srcSet={SRC.mobile.still} />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={SRC.desktop.still} alt={alt} style={fill} />
+            <img src={SRC.desktop.still} alt={alt} style={fill} />
         </picture>
       </noscript>
     </span>
