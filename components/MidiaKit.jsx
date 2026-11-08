@@ -982,7 +982,13 @@ export default class MidiaKit extends Component {
           "/assets/fotos/nyma-case.webp",
           "/assets/fotos/couple2-case.webp",
         ][i],
-        src2: ["/assets/fotos/f15.webp", "/assets/fotos/f05.webp", "/assets/fotos/f06.webp", "/assets/fotos/f12.webp", "/assets/fotos/f02.webp"][i],
+        src2: [
+          "/assets/fotos/f15.webp",
+          "/assets/fotos/f05.webp",
+          "/assets/fotos/f06.webp",
+          "/assets/fotos/f12.webp",
+          "/assets/fotos/f02.webp",
+        ][i],
         ph: "Foto da campanha",
         imgOrder: i % 2 ? 2 : 1,
         txtOrder: i % 2 ? 1 : 2,
@@ -1213,102 +1219,104 @@ export default class MidiaKit extends Component {
           </div>
         </nav>
         {/* Painel lateral com os pacotes e formatos (abre pelo botão no fim dos cases) */}
-        <div className={v.pkgOpen ? "pkg-drawer open" : "pkg-drawer"} aria-hidden={!v.pkgOpen}>
-          <div className="pkg-backdrop" onClick={v.closePkg}></div>
-          <aside id="pacotes" role="dialog" aria-modal="true" aria-labelledby="pacotes-titulo" className="pkg-panel">
-            <div className="pkg-head">
-              <span>N° 07 · Formatos e investimento</span>
-              <button
-                ref={v.pkgCloseRef}
-                className="pkg-close"
-                onClick={v.closePkg}
-                aria-label="Fechar pacotes"
-                tabIndex={v.pkgOpen ? 0 : -1}
-              >
-                <i className="ph ph-x"></i>
-              </button>
-            </div>
-            <h2 id="pacotes-titulo">
-              Escolha o seu <em>formato</em>
-            </h2>
-            <p className="pkg-lead">Valores de referência. Cada projeto pode ser ajustado ao objetivo, prazo e escopo da sua marca.</p>
-            <div className="pkg-toggle" role="group" aria-label="Tipo de valor">
-              <button onClick={v.setPkg} aria-pressed={!v.knobX.startsWith("28")} tabIndex={v.pkgOpen ? 0 : -1} style={{ color: v.pkgC }}>
-                Pacotes
-              </button>
-              <button
-                className="pkg-switch"
-                onClick={v.togglePlan}
-                aria-label="Alternar entre pacotes e formatos"
-                tabIndex={v.pkgOpen ? 0 : -1}
-              >
-                <span style={{ transform: `translateX(${v.knobX})` }}></span>
-              </button>
-              <button onClick={v.setFmt} aria-pressed={v.knobX.startsWith("28")} tabIndex={v.pkgOpen ? 0 : -1} style={{ color: v.fmtC }}>
-                Por formato
-              </button>
-            </div>
-            <div className="pkg-list" onMouseLeave={v.plansLeave}>
-              {v.plans.map((p, i) => (
-                <article
-                  key={p.name}
-                  onMouseEnter={p.enter}
-                  className="pkg-card"
-                  style={{
-                    background: p.bg,
-                    color: p.fg,
-                    borderColor: p.bd,
-                    boxShadow: p.sh === "none" ? "none" : "0 18px 50px rgba(255,56,119,.3)",
-                  }}
+        {v.showPrices ? (
+          <div className={v.pkgOpen ? "pkg-drawer open" : "pkg-drawer"} aria-hidden={!v.pkgOpen}>
+            <div className="pkg-backdrop" onClick={v.closePkg}></div>
+            <aside id="pacotes" role="dialog" aria-modal="true" aria-labelledby="pacotes-titulo" className="pkg-panel">
+              <div className="pkg-head">
+                <span>N° 07 · Formatos e investimento</span>
+                <button
+                  ref={v.pkgCloseRef}
+                  className="pkg-close"
+                  onClick={v.closePkg}
+                  aria-label="Fechar pacotes"
+                  tabIndex={v.pkgOpen ? 0 : -1}
                 >
-                  {p.badge ? <span className="pkg-badge">{p.badge}</span> : null}
-                  <div className="pkg-card-top">
-                    <span className="pkg-name" style={{ color: p.accent }}>
-                      <i className={p.icon}></i>
-                      {p.name}
-                    </span>
-                    <span className="pkg-from" style={{ color: p.muted }}>
-                      {p.from}
-                    </span>
-                  </div>
-                  <div className="pkg-price">
-                    <strong>{p.price}</strong>
-                    <span style={{ color: p.muted }}>{p.unit}</span>
-                  </div>
-                  <p style={{ color: p.muted }}>{p.desc}</p>
-                  <ul>
-                    {p.feats.map((x) => (
-                      <li key={x.t}>
-                        <i className="ph ph-check-circle" style={{ color: p.accent }}></i>
-                        <span>{x.t}</span>
-                        {x.v ? <b>{x.v}</b> : null}
-                      </li>
-                    ))}
-                  </ul>
-                  <button
-                    className="pkg-pick"
-                    onClick={p.pick}
-                    tabIndex={v.pkgOpen ? 0 : -1}
-                    style={{ background: p.btnBg, color: p.btnFg, borderColor: p.btnBd }}
+                  <i className="ph ph-x"></i>
+                </button>
+              </div>
+              <h2 id="pacotes-titulo">
+                Escolha o seu <em>formato</em>
+              </h2>
+              <p className="pkg-lead">Valores de referência. Cada projeto pode ser ajustado ao objetivo, prazo e escopo da sua marca.</p>
+              <div className="pkg-toggle" role="group" aria-label="Tipo de valor">
+                <button onClick={v.setPkg} aria-pressed={!v.knobX.startsWith("28")} tabIndex={v.pkgOpen ? 0 : -1} style={{ color: v.pkgC }}>
+                  Pacotes
+                </button>
+                <button
+                  className="pkg-switch"
+                  onClick={v.togglePlan}
+                  aria-label="Alternar entre pacotes e formatos"
+                  tabIndex={v.pkgOpen ? 0 : -1}
+                >
+                  <span style={{ transform: `translateX(${v.knobX})` }}></span>
+                </button>
+                <button onClick={v.setFmt} aria-pressed={v.knobX.startsWith("28")} tabIndex={v.pkgOpen ? 0 : -1} style={{ color: v.fmtC }}>
+                  Por formato
+                </button>
+              </div>
+              <div className="pkg-list" onMouseLeave={v.plansLeave}>
+                {v.plans.map((p, i) => (
+                  <article
+                    key={p.name}
+                    onMouseEnter={p.enter}
+                    className="pkg-card"
+                    style={{
+                      background: p.bg,
+                      color: p.fg,
+                      borderColor: p.bd,
+                      boxShadow: p.sh === "none" ? "none" : "0 18px 50px rgba(255,56,119,.3)",
+                    }}
                   >
-                    {p.cta} <i className="ph ph-arrow-right"></i>
-                  </button>
-                </article>
-              ))}
-            </div>
-            <ul className="pkg-notes">
-              {v.priceNotes.map((n) => (
-                <li key={n}>
-                  <i className="ph ph-info"></i>
-                  {n}
-                </li>
-              ))}
-            </ul>
-            <button className="pkg-all" onClick={v.seeAllPrices} tabIndex={v.pkgOpen ? 0 : -1}>
-              Ver a seção completa na página <i className="ph ph-arrow-down"></i>
-            </button>
-          </aside>
-        </div>
+                    {p.badge ? <span className="pkg-badge">{p.badge}</span> : null}
+                    <div className="pkg-card-top">
+                      <span className="pkg-name" style={{ color: p.accent }}>
+                        <i className={p.icon}></i>
+                        {p.name}
+                      </span>
+                      <span className="pkg-from" style={{ color: p.muted }}>
+                        {p.from}
+                      </span>
+                    </div>
+                    <div className="pkg-price">
+                      <strong>{p.price}</strong>
+                      <span style={{ color: p.muted }}>{p.unit}</span>
+                    </div>
+                    <p style={{ color: p.muted }}>{p.desc}</p>
+                    <ul>
+                      {p.feats.map((x) => (
+                        <li key={x.t}>
+                          <i className="ph ph-check-circle" style={{ color: p.accent }}></i>
+                          <span>{x.t}</span>
+                          {x.v ? <b>{x.v}</b> : null}
+                        </li>
+                      ))}
+                    </ul>
+                    <button
+                      className="pkg-pick"
+                      onClick={p.pick}
+                      tabIndex={v.pkgOpen ? 0 : -1}
+                      style={{ background: p.btnBg, color: p.btnFg, borderColor: p.btnBd }}
+                    >
+                      {p.cta} <i className="ph ph-arrow-right"></i>
+                    </button>
+                  </article>
+                ))}
+              </div>
+              <ul className="pkg-notes">
+                {v.priceNotes.map((n) => (
+                  <li key={n}>
+                    <i className="ph ph-info"></i>
+                    {n}
+                  </li>
+                ))}
+              </ul>
+              <button className="pkg-all" onClick={v.seeAllPrices} tabIndex={v.pkgOpen ? 0 : -1}>
+                Ver a seção completa na página <i className="ph ph-arrow-down"></i>
+              </button>
+            </aside>
+          </div>
+        ) : null}
         {/* Player das publis (abre pelos cases) */}
         {v.reel >= 0 ? (
           <div className="reel-modal" role="dialog" aria-modal="true" aria-label={"Publi " + v.cases[v.reel].brand}>
@@ -2863,17 +2871,19 @@ export default class MidiaKit extends Component {
               ))}
             </div>
             {/* Atalho para os pacotes sem precisar rolar até o fim da página */}
-            <div data-r="" className="pkg-cta">
-              <div className="pkg-cta-text">
-                <span className="pkg-cta-kicker">Gostou dos resultados?</span>
-                <h3>
-                  Conheça os <em>pacotes</em> e modelos de parceria
-                </h3>
+            {v.showPrices ? (
+              <div data-r="" className="pkg-cta">
+                <div className="pkg-cta-text">
+                  <span className="pkg-cta-kicker">Gostou dos resultados?</span>
+                  <h3>
+                    Conheça os <em>pacotes</em> e modelos de parceria
+                  </h3>
+                </div>
+                <button ref={v.pkgTriggerRef} className="pkg-cta-btn" onClick={v.openPkg} aria-haspopup="dialog" aria-controls="pacotes">
+                  Ver pacotes e formatos <i className="ph ph-arrow-up-right"></i>
+                </button>
               </div>
-              <button ref={v.pkgTriggerRef} className="pkg-cta-btn" onClick={v.openPkg} aria-haspopup="dialog" aria-controls="pacotes">
-                Ver pacotes e formatos <i className="ph ph-arrow-up-right"></i>
-              </button>
-            </div>
+            ) : null}
           </div>
         </section>
 

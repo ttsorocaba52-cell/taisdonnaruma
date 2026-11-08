@@ -22,6 +22,15 @@ npm start
 
 A página é gerada como estática, então pode ser publicada na Vercel, Netlify ou qualquer hospedagem estática.
 
+## Rotas
+
+| Rota | O que mostra |
+|---|---|
+| `/` | Mídia kit completo, com valores e pacotes |
+| `/metricas` | Página interna idêntica, só com métricas e cases: sem a seção de valores, sem o atalho/painel de pacotes e sem "Serviços" no menu. Fica fora do Google (noindex); compartilhe o link direto |
+
+As duas usam o mesmo componente (`components/MidiaKit.jsx`); a rota interna só passa `showPrices={false}` (`app/metricas/page.tsx`). Qualquer ajuste de conteúdo vale para as duas.
+
 ## Onde editar o conteúdo
 
 Todo o conteúdo (números, cases, pacotes, contatos) fica em `components/MidiaKit.jsx`, no método `renderVals()`:
