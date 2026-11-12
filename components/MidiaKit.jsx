@@ -4919,31 +4919,6 @@ export default class MidiaKit extends Component {
                         className="hv10"
                       >
                         <Slot src={v.src} ph={"Capa do vídeo"} />
-                        <div
-                          style={{
-                            position: "absolute",
-                            left: "0",
-                            right: "0",
-                            bottom: "0",
-                            pointerEvents: "none",
-                            padding: "30px 10px 10px",
-                            background: "linear-gradient(transparent,rgba(69,21,49,.88))",
-                            color: "#F8F5F2",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            fontSize: "13px",
-                            fontWeight: "600",
-                          }}
-                        >
-                          <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                            <i className="ph-fill ph-play"></i>
-                            {v.views}
-                          </span>
-                          <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                            <i style={{ color: "#FF8FB0" }} className="ph-fill ph-heart"></i>
-                            {v.likes}
-                          </span>
-                        </div>
                       </div>
                     </Fragment>
                   ))}
