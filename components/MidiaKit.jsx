@@ -4893,7 +4893,7 @@ export default class MidiaKit extends Component {
               </div>
               <div data-r="" style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
                 <span style={{ fontSize: "12.5px", fontWeight: "600", letterSpacing: ".1em", textTransform: "uppercase" }}>
-                  Vídeos em destaque
+                  Fotos em destaque
                 </span>
                 <div
                   className="tt-vids"
