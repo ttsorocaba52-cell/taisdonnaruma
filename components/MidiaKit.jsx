@@ -62,13 +62,15 @@ const EDU = [
   { tag: "Opinião", t: "Tendências que dividem opiniões", dur: "1:43" },
   { tag: "Provador", t: "Provador da collab TIG x Renner", dur: "1:50" },
   { tag: "Moda comentada", t: "Victoria's Secret Fashion Show 2026", dur: "2:02" },
+  { tag: "Curiosidade", t: "O sutiã de 50 milhões da Victoria's Secret", dur: "1:25" },
+  { tag: "Provador", t: "Bora provar os looks", dur: "1:41" },
 ].map((x, i) => ({
   ...x,
   n: "0" + (i + 1),
   video: `/assets/educativo/edu-${i + 1}.mp4`,
   preview: `/assets/educativo/edu-${i + 1}-preview.mp4`,
   poster: `/assets/educativo/edu-${i + 1}-poster.webp`,
-  rot: ["-2deg", "1.5deg", "-1deg", "2deg", "-1.5deg"][i],
+  rot: ["-2deg", "1.5deg", "-1deg", "2deg", "-1.5deg", "1deg", "-2deg"][i],
 }));
 const publi = ({ slug, dur }) => ({
   video: `/assets/publis/${slug}.mp4`,
@@ -5709,30 +5711,39 @@ export default class MidiaKit extends Component {
                   ))}
                 </div>
               </div>
+              {/* carrossel infinito: a lista aparece duas vezes e desliza -50% em loop; a cópia fica escondida de leitores de tela e do teclado */}
               <div className="edu-grid">
-                {v.edu.map((x) => (
-                  <div key={x.n} className="edu-card" style={{ "--rot": x.rot }}>
-                    <button type="button" className="edu-thumb" onClick={x.play} aria-label={"Assistir: " + x.t}>
-                      <video
-                        data-autoplay=""
-                        src={x.preview}
-                        poster={x.poster}
-                        muted
-                        loop
-                        playsInline
-                        preload="none"
-                        aria-hidden="true"
-                        tabIndex={-1}
-                      />
-                      <span className="edu-tag">{x.tag}</span>
-                      <span className="case-reel-play">
-                        <i className="ph-fill ph-play"></i>
-                      </span>
-                      <span className="case-reel-time">{x.dur}</span>
-                    </button>
-                    <span className="edu-title">{x.t}</span>
-                  </div>
-                ))}
+                <div className="edu-track">
+                  {[...v.edu, ...v.edu].map((x, k) => (
+                    <div key={k} className="edu-card" style={{ "--rot": x.rot }} aria-hidden={k >= v.edu.length ? true : undefined}>
+                      <button
+                        type="button"
+                        className="edu-thumb"
+                        onClick={x.play}
+                        aria-label={"Assistir: " + x.t}
+                        tabIndex={k >= v.edu.length ? -1 : 0}
+                      >
+                        <video
+                          data-autoplay=""
+                          src={x.preview}
+                          poster={x.poster}
+                          muted
+                          loop
+                          playsInline
+                          preload="none"
+                          aria-hidden="true"
+                          tabIndex={-1}
+                        />
+                        <span className="edu-tag">{x.tag}</span>
+                        <span className="case-reel-play">
+                          <i className="ph-fill ph-play"></i>
+                        </span>
+                        <span className="case-reel-time">{x.dur}</span>
+                      </button>
+                      <span className="edu-title">{x.t}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
