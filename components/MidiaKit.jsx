@@ -54,6 +54,22 @@ const PUBLIS = [
   { slug: "couple2", dur: "0:58" },
 ];
 const N_CASES = PUBLIS.length;
+
+// Conteúdo educativo: vídeos em public/assets/educativo (edu-N.mp4, edu-N-preview.mp4, edu-N-poster.webp)
+const EDU = [
+  { tag: "Tendência", t: "Chinelo com acessórios: sim ou não?", dur: "1:39" },
+  { tag: "Collab", t: "Renner x TIG: o que esperar da collab", dur: "1:39" },
+  { tag: "Opinião", t: "Tendências que dividem opiniões", dur: "1:43" },
+  { tag: "Provador", t: "Provador da collab TIG x Renner", dur: "1:50" },
+  { tag: "Moda comentada", t: "Victoria's Secret Fashion Show 2026", dur: "2:02" },
+].map((x, i) => ({
+  ...x,
+  n: "0" + (i + 1),
+  video: `/assets/educativo/edu-${i + 1}.mp4`,
+  preview: `/assets/educativo/edu-${i + 1}-preview.mp4`,
+  poster: `/assets/educativo/edu-${i + 1}-poster.webp`,
+  rot: ["-2deg", "1.5deg", "-1deg", "2deg", "-1.5deg"][i],
+}));
 const publi = ({ slug, dur }) => ({
   video: `/assets/publis/${slug}.mp4`,
   preview: `/assets/publis/${slug}-preview.mp4`,
@@ -78,6 +94,7 @@ export default class MidiaKit extends Component {
     menu: false,
     pkgOpen: false,
     reel: -1,
+    reelList: "cases",
     caseIdx: 0,
   };
   progRef = createRef();
@@ -201,9 +218,9 @@ export default class MidiaKit extends Component {
     });
   }
   // player das publis
-  openReel(i) {
+  openReel(i, list = "cases") {
     this.reelReturn = document.activeElement;
-    this.setState({ reel: i, menu: false, pkgOpen: false });
+    this.setState({ reel: i, reelList: list, menu: false, pkgOpen: false });
   }
   closeReel = () => {
     this.setState({ reel: -1 });
@@ -212,7 +229,11 @@ export default class MidiaKit extends Component {
   // visualizador de cases
   setCase = (i) => this.setState({ caseIdx: (i + N_CASES) % N_CASES });
   stepCase = (d) => this.setState((st) => ({ caseIdx: (st.caseIdx + d + N_CASES) % N_CASES }));
-  stepReel = (d) => this.setState((st) => ({ reel: (st.reel + d + N_CASES) % N_CASES }));
+  stepReel = (d) =>
+    this.setState((st) => {
+      const n = st.reelList === "edu" ? EDU.length : N_CASES;
+      return { reel: (st.reel + d + n) % n };
+    });
   goId(id) {
     const s = document.getElementById(id);
     if (s) window.scrollTo({ top: s.getBoundingClientRect().top + window.scrollY - 40, behavior: "smooth" });
@@ -619,6 +640,17 @@ export default class MidiaKit extends Component {
       closeMenu: () => this.setState({ menu: false }),
       pkgOpen: this.state.pkgOpen,
       reel: this.state.reel,
+      reelItems:
+        this.state.reelList === "edu"
+          ? EDU.map((x) => ({
+              kicker: x.n + " · " + x.tag,
+              title: x.t,
+              video: x.video,
+              poster: x.poster,
+              foot: "Conteúdo educativo",
+              label: "Vídeo",
+            }))
+          : null,
       caseIdx: this.state.caseIdx,
       nextCase: () => this.stepCase(1),
       prevCase: () => this.stepCase(-1),
@@ -902,7 +934,8 @@ export default class MidiaKit extends Component {
         ["Rotina e GRWM", "180K", 53],
         ["Recebidos e reviews", "150K", 44],
       ].map(([t, v, w], i) => ({ n: "0" + (i + 1), t, v, w: w + "%" })),
-      eduTags: ["Dicas de styling", "Beleza explicada", "Guia de compras", "Tendências"],
+      eduTags: ["Tendências", "Collabs e lançamentos", "Provador", "Moda comentada"],
+      edu: EDU.map((x, i) => ({ ...x, play: () => this.openReel(i, "edu") })),
       eduSlots: [
         ["Dica", "Como montar um look-base", "#FFE3EB", "-3deg"],
         ["Beleza", "Skincare sem complicar", "#DCE5FD", "2deg"],
@@ -1317,49 +1350,67 @@ export default class MidiaKit extends Component {
             </aside>
           </div>
         ) : null}
-        {/* Player das publis (abre pelos cases) */}
-        {v.reel >= 0 ? (
-          <div className="reel-modal" role="dialog" aria-modal="true" aria-label={"Publi " + v.cases[v.reel].brand}>
-            <div className="reel-backdrop" onClick={v.closeReel}></div>
-            <div className="reel-box">
-              <div className="reel-head">
-                <div>
-                  <span className="reel-kicker">
-                    {v.cases[v.reel].n} · {v.cases[v.reel].type}
-                  </span>
-                  <strong>{v.cases[v.reel].brand}</strong>
+        {/* Player de vídeo (publis dos cases e conteúdos educativos) */}
+        {v.reel >= 0
+          ? (() => {
+              const items =
+                v.reelItems ||
+                v.cases.map((c) => ({
+                  kicker: c.n + " · " + c.type,
+                  title: c.brand,
+                  video: c.video,
+                  poster: c.poster,
+                  foot: c.platform,
+                  label: "Publi",
+                }));
+              const it = items[v.reel];
+              return (
+                <div className="reel-modal" role="dialog" aria-modal="true" aria-label={it.label + " " + it.title}>
+                  <div className="reel-backdrop" onClick={v.closeReel}></div>
+                  <div className="reel-box">
+                    <div className="reel-head">
+                      <div>
+                        <span className="reel-kicker">{it.kicker}</span>
+                        <strong>{it.title}</strong>
+                      </div>
+                      <button type="button" className="reel-close" onClick={v.closeReel} aria-label="Fechar vídeo" autoFocus>
+                        <i className="ph ph-x"></i>
+                      </button>
+                    </div>
+                    <div className="reel-stage">
+                      <button type="button" className="reel-nav prev" onClick={v.prevReel} aria-label={it.label + " anterior"}>
+                        <i className="ph ph-caret-left"></i>
+                      </button>
+                      <video
+                        key={it.video}
+                        className="reel-video"
+                        src={it.video}
+                        poster={it.poster}
+                        controls
+                        autoPlay
+                        playsInline
+                        preload="auto"
+                      ></video>
+                      <button
+                        type="button"
+                        className="reel-nav next"
+                        onClick={v.nextReel}
+                        aria-label={"Próximo: " + it.label.toLowerCase()}
+                      >
+                        <i className="ph ph-caret-right"></i>
+                      </button>
+                    </div>
+                    <div className="reel-foot">
+                      <span>{it.foot}</span>
+                      <span>
+                        {v.reel + 1} / {items.length}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-                <button type="button" className="reel-close" onClick={v.closeReel} aria-label="Fechar vídeo" autoFocus>
-                  <i className="ph ph-x"></i>
-                </button>
-              </div>
-              <div className="reel-stage">
-                <button type="button" className="reel-nav prev" onClick={v.prevReel} aria-label="Publi anterior">
-                  <i className="ph ph-caret-left"></i>
-                </button>
-                <video
-                  key={v.cases[v.reel].video}
-                  className="reel-video"
-                  src={v.cases[v.reel].video}
-                  poster={v.cases[v.reel].poster}
-                  controls
-                  autoPlay
-                  playsInline
-                  preload="auto"
-                ></video>
-                <button type="button" className="reel-nav next" onClick={v.nextReel} aria-label="Próxima publi">
-                  <i className="ph ph-caret-right"></i>
-                </button>
-              </div>
-              <div className="reel-foot">
-                <span>{v.cases[v.reel].platform}</span>
-                <span>
-                  {v.reel + 1} / {v.cases.length}
-                </span>
-              </div>
-            </div>
-          </div>
-        ) : null}
+              );
+            })()
+          : null}
         {/* Menu do celular (abaixo de 760px): tela cheia com os links */}
         <div id="menu-mobile" className={v.menuOpen ? "menu-mobile open" : "menu-mobile"} aria-hidden={!v.menuOpen} onClick={v.closeMenu}>
           <div className="menu-mobile-inner" onClick={(e) => e.stopPropagation()}>
@@ -5621,6 +5672,7 @@ export default class MidiaKit extends Component {
         >
           <div style={{ maxWidth: "1360px", margin: "0 auto" }}>
             <div
+              className="edu-wrap"
               data-r=""
               style={{
                 display: "grid",
@@ -5682,53 +5734,29 @@ export default class MidiaKit extends Component {
                   ))}
                 </div>
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3,minmax(0,1fr))", gap: "clamp(10px,1.4vw,18px)" }}>
-                {v.eduSlots.map((x, _i42) => (
-                  <Fragment key={_i42}>
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "8px",
-                        transform: `rotate(${x.rot})`,
-                        transition: "transform .35s cubic-bezier(.2,.8,.2,1)",
-                      }}
-                      className="hv18"
-                    >
-                      <div
-                        style={{
-                          position: "relative",
-                          aspectRatio: "9/16",
-                          borderRadius: "14px",
-                          overflow: "hidden",
-                          border: "1.5px solid #451531",
-                          background: x.bg,
-                          color: "#451531",
-                        }}
-                      >
-                        <Slot ph={"Arraste um conteúdo educativo"} />
-                        <span
-                          style={{
-                            position: "absolute",
-                            left: "8px",
-                            top: "8px",
-                            pointerEvents: "none",
-                            background: "#F8F5F2",
-                            color: "#451531",
-                            borderRadius: "999px",
-                            padding: "4px 10px",
-                            fontSize: "11.5px",
-                            fontWeight: "600",
-                            letterSpacing: ".06em",
-                            textTransform: "uppercase",
-                          }}
-                        >
-                          {x.tag}
-                        </span>
-                      </div>
-                      <span style={{ fontSize: "14px", fontWeight: "600", lineHeight: "1.3" }}>{x.t}</span>
-                    </div>
-                  </Fragment>
+              <div className="edu-grid">
+                {v.edu.map((x) => (
+                  <div key={x.n} className="edu-card" style={{ "--rot": x.rot }}>
+                    <button type="button" className="edu-thumb" onClick={x.play} aria-label={"Assistir: " + x.t}>
+                      <video
+                        data-autoplay=""
+                        src={x.preview}
+                        poster={x.poster}
+                        muted
+                        loop
+                        playsInline
+                        preload="none"
+                        aria-hidden="true"
+                        tabIndex={-1}
+                      />
+                      <span className="edu-tag">{x.tag}</span>
+                      <span className="case-reel-play">
+                        <i className="ph-fill ph-play"></i>
+                      </span>
+                      <span className="case-reel-time">{x.dur}</span>
+                    </button>
+                    <span className="edu-title">{x.t}</span>
+                  </div>
                 ))}
               </div>
             </div>

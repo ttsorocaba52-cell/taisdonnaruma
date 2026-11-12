@@ -60,6 +60,7 @@ Ficam em `public/assets/`, já otimizadas em WebP:
 - `fotos/`: fotos da Tais e dos cases
 - `marcas/`: logos das marcas parceiras
 - `prints/`: prints das plataformas
+- `educativo/`: vídeos da seção "Conteúdo que ensina e informa" (`edu-N.mp4`, `edu-N-preview.mp4`, `edu-N-poster.webp`). Títulos e etiquetas ficam em `EDU`, no topo de `components/MidiaKit.jsx`
 - `publis/`: vídeos das publis dos cases (`<marca>.mp4` completo com som, `<marca>-preview.mp4` prévia de 6s sem som, `<marca>-poster.webp` capa). A lista fica em `PUBLIS`, no topo de `components/MidiaKit.jsx`
 
 Para trocar uma imagem, substitua o arquivo mantendo o mesmo nome ou atualize o caminho em `renderVals()`.
